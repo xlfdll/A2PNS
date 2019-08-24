@@ -20,7 +20,7 @@ internal object AppHelper {
     var isLaunched = false
 
     fun init(context: Context) {
-        if (ExternalData.TestFlightMode) {
+        if (ExternalData.DebugMode) {
             APNSServerURL = "https://api.sandbox.push.apple.com"
         } else {
             APNSServerURL = "https://api.push.apple.com"

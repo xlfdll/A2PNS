@@ -58,7 +58,7 @@ class NotificationListener : NotificationListenerService() {
                             Response.ErrorListener { error ->
                             })
 
-                        if (!ExternalData.MockDebugMode) {
+                        if (!ExternalData.MockMode) {
                             AppHelper.HttpRequestQueue.add(request)
                         }
 
