@@ -13,20 +13,32 @@ internal object AppHelper {
 
     // Development server: api.sandbox.push.apple.com:443
     // Production server: api.push.apple.com:443
-    const val APNSServerURL = "https://api.sandbox.push.apple.com"
-
+    lateinit var APNSServerURL: String
     lateinit var Settings: SharedPreferences
     lateinit var HttpRequestQueue: RequestQueue
 
     var isLaunched = false
 
     fun init(context: Context) {
+        if (ExternalData.TestFlightMode) {
+            APNSServerURL = "https://api.sandbox.push.apple.com"
+        } else {
+            APNSServerURL = "https://api.push.apple.com"
+        }
+
         if (!(::Settings.isInitialized)) {
             Settings = PreferenceManager.getDefaultSharedPreferences(context)
 
-            if (Settings.getStringSet(context.getString(R.string.pref_key_selected_apps), null) == null) {
+            if (Settings.getStringSet(
+                    context.getString(R.string.pref_key_selected_apps),
+                    null
+                ) == null
+            ) {
                 Settings.edit()
-                    .putStringSet(context.getString(R.string.pref_key_selected_apps), HashSet<String>())
+                    .putStringSet(
+                        context.getString(R.string.pref_key_selected_apps),
+                        HashSet<String>()
+                    )
                     .commit()
             }
         }
