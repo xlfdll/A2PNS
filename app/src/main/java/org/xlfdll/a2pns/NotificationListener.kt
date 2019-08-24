@@ -62,7 +62,10 @@ class NotificationListener : NotificationListenerService() {
                             AppHelper.HttpRequestQueue.add(request)
                         }
 
-                        Log.i(getString(R.string.app_name), "Message from ${item.source}")
+                        Log.i(
+                            getString(R.string.app_name),
+                            "Message from ${item.source} (${item.packageName})"
+                        )
                     }
                 }
 
