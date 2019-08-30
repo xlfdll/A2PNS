@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android to Push Notification Service</string>
-    <string name="service_name">A2PNS Notification Listener</string>
     <string name="switch_enable_text">Enable Service</string>
     <string name="button_clear_history_text">Clear History</string>
 
@@ -10,7 +9,7 @@
     <string name="action_select_all">Select All</string>
     <string name="action_clear_all">Clear All</string>
 
-    <string name="instruction_device_token_pair">Move camera to the QR code shown in the target (destination) device to finish pairing</string>
+    <string name="instruction_device_token_pair">Move camera to the A2PNS QR code shown in the target (destination) device to finish pairing</string>
 
     <string name="notification_channel_name">Android to Push Notification Service</string>
     <string name="notification_channel_description">Android to Push Notification Service</string>
