@@ -10,6 +10,8 @@
     <string name="action_select_all">Select All</string>
     <string name="action_clear_all">Clear All</string>
 
+    <string name="instruction_device_token_pair">Move camera to the QR code shown in the target (destination) device to finish pairing</string>
+
     <string name="notification_channel_name">Android to Push Notification Service</string>
     <string name="notification_channel_description">Android to Push Notification Service</string>
     <string name="notification_running_text">The service is running</string>
