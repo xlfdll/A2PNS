@@ -10,7 +10,7 @@
     <string name="action_select_all">すべて選択</string>
     <string name="action_clear_all">すべて選択解除</string>
 
-    <string name="instruction_device_token_pair">カメラでターゲットデバイスの画面に表示するA2PNSのQRコードをスキャンし、ペアリングを行う</string>
+    <string name="instruction_device_token_pair">カメラでターゲットデバイスの画面に表示されるA2PNSのQRコードをスキャンし、ペアリングを行う</string>
 
     <string name="notification_channel_name">Android通知転送サービス</string>
     <string name="notification_channel_description">Android通知転送サービス</string>
