@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">A2PNS</string>
+    <string name="app_title">Android通知転送サービス</string>
+    <string name="switch_enable_text">サービス有効</string>
+    <string name="button_clear_history_text">通知歴史をクリア</string>
+
+    <string name="action_settings">設定</string>
+    <string name="action_search">検索</string>
+    <string name="action_select_all">すべて選択</string>
+    <string name="action_clear_all">すべて選択解除</string>
+
+    <string name="instruction_device_token_pair">カメラでターゲットデバイスの画面に表示するA2PNSのQRコードをスキャンし、ペアリングを行う</string>
+
+    <string name="notification_channel_name">Android通知転送サービス</string>
+    <string name="notification_channel_description">Android通知転送サービス</string>
+    <string name="notification_running_text">サービス実行中</string>
+
+    <string name="toast_device_token_pair_success_message">デバイスペアリング成功</string>
+    <string name="toast_device_token_camera_init_error">カメラ初期化エラー：</string>
+
+    <string name="toast_token_updated_message">通知サービスの認証トークンを更新しました</string>
+    <string name="toast_token_no_need_to_update_message">通知サービスの認証トークンは最新です。\n更新がいりません。</string>
+    <string name="alert_token_download_error_message">通知サービスの認証トークンは同期できません。\nインターネット接続をチェックし、もう一度やり直してください。</string>
+
+    <string name="alert_button_yes">はい</string>
+    <string name="alert_button_no">いいえ</string>
+    <string name="alert_button_cancel">キャンセル</string>
+
+    <string name="alert_no_device_token_title">デバイストークンが設定されていません</string>
+    <string name="alert_no_device_token_message">デバイスペアリングがまだ設定されていません。\n\n今すぐデバイスをペアリングしますか？</string>
+    <string name="title_activity_settings">設定</string>
+
+    <!-- Preferences -->
+    <string name="pref_category_title_general">全般</string>
+    <string name="pref_title_pair_device">QRコードでデバイスをペアする</string>
+    <string name="pref_title_sync_auth_token">通知サービスの認証トークンを同期</string>
+    <string name="pref_title_select_apps">通知転送のアプリを選択</string>
+
+    <string name="pref_category_title_custom">カスタム</string>
+    <string name="pref_title_set_custom_auth_token_url">カスタム認証トークンサーバURLを設定</string>
+    <string name="pref_title_set_custom_auth_token_secret">カスタム認証トークン復号鍵を設定</string>
+
+    <string name="pref_title_action_bar_select_apps">アプリを選択</string>
+</resources>
