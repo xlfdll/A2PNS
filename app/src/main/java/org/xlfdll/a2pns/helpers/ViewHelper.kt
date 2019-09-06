@@ -1,4 +1,4 @@
-package org.xlfdll.a2pns
+package org.xlfdll.a2pns.helpers
 
 import android.content.Context
 import android.widget.Toast
@@ -6,6 +6,9 @@ import androidx.appcompat.app.AlertDialog
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import org.xlfdll.a2pns.models.NotificationItem
+import org.xlfdll.a2pns.R
+import org.xlfdll.a2pns.models.ExternalData
 
 internal object ViewHelper {
     val NotificationItemList = ArrayList<NotificationItem>()

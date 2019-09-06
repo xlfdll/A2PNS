@@ -1,10 +1,12 @@
-package org.xlfdll.a2pns
+package org.xlfdll.a2pns.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
+import org.xlfdll.a2pns.R
+import org.xlfdll.a2pns.models.ExternalData
 import org.xlfdll.android.network.OkHttpStack
 
 internal object AppHelper {
@@ -26,7 +28,7 @@ internal object AppHelper {
             APNSServerURL = "https://api.push.apple.com"
         }
 
-        if (!(::Settings.isInitialized)) {
+        if (!(AppHelper::Settings.isInitialized)) {
             Settings = PreferenceManager.getDefaultSharedPreferences(context)
 
             if (Settings.getStringSet(
@@ -43,7 +45,7 @@ internal object AppHelper {
             }
         }
 
-        if (!(::HttpRequestQueue.isInitialized)) {
+        if (!(AppHelper::HttpRequestQueue.isInitialized)) {
             HttpRequestQueue = Volley.newRequestQueue(context, OkHttpStack())
         }
     }

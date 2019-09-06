@@ -1,4 +1,4 @@
-package org.xlfdll.a2pns
+package org.xlfdll.a2pns.helpers
 
 import android.util.Base64
 import io.jsonwebtoken.Jwts
@@ -37,7 +37,9 @@ internal object CryptoHelper {
 
     fun getAPNSBearerToken(authTokenPackage: JSONObject?): String? {
         if (authTokenPackage != null) {
-            val key = getPrivateKeyFromString(authTokenPackage.getString("authKey"))
+            val key = getPrivateKeyFromString(
+                authTokenPackage.getString("authKey")
+            )
             val jwt = Jwts.builder()
                 .setHeaderParam("kid", authTokenPackage.getString("authkeyid"))
                 .setIssuer(authTokenPackage.getString("teamid"))

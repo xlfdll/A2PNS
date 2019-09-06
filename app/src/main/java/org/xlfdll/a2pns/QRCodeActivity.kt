@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import org.json.JSONException
 import org.json.JSONObject
+import org.xlfdll.a2pns.helpers.AppHelper
 
 class QRCodeActivity : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner

@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_app_list.*
+import org.xlfdll.a2pns.helpers.AppHelper
 
 class AppListActivity : AppCompatActivity() {
     private lateinit var installedPackages: MutableList<PackageInfo>

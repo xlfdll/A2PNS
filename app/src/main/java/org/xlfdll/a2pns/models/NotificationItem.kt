@@ -1,4 +1,4 @@
-package org.xlfdll.a2pns
+package org.xlfdll.a2pns.models
 
 import android.os.Parcel
 import android.os.Parcelable

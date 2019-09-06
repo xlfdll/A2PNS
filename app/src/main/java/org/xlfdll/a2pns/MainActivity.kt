@@ -17,6 +17,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import org.xlfdll.a2pns.helpers.AppHelper
+import org.xlfdll.a2pns.helpers.ViewHelper
+import org.xlfdll.a2pns.models.NotificationItem
 
 class MainActivity : AppCompatActivity() {
     private val receiver = NotificationServiceReceiver()

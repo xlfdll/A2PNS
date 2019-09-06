@@ -46,7 +46,7 @@ dependencies {
 
 gradle.taskGraph.whenReady { taskGraph ->
     if (taskGraph.hasTask(':app:assembleRelease')) {
-        String externalData = new File('app/src/main/java/org/xlfdll/a2pns/ExternalData.kt').text
+        String externalData = new File('app/src/main/java/org/xlfdll/a2pns/models/ExternalData.kt').text
 
         if (externalData.contains('MockMode = true') || externalData.contains('DebugMode = true')) {
             logger.error('Debug switches must be turned off to build release version.')
