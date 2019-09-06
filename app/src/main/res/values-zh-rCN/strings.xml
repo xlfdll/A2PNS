@@ -42,4 +42,7 @@
     <string name="pref_title_set_custom_auth_token_secret">设定自定义令牌解密密钥</string>
 
     <string name="pref_title_action_bar_select_apps">选择应用</string>
+    <string name="alert_require_notification_listener_permission_title">需要通知监听权限</string>
+    <string name="alert_require_notification_listener_permission_message">应用没有通知监听权限。请在随后出现的界面里允许通知监听权限。\n\n本应用需要通知监听权限以用来获取并转送其它应用或服务生成的通知。</string>
+    <string name="alert_button_ok">OK</string>
 </resources>

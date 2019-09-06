@@ -40,11 +40,6 @@ class MainActivity : AppCompatActivity() {
             AppHelper.isLaunched = true
         }
 
-        // Notification listener and receiver initialization
-        if (!isNotificationListenerEnabled(applicationContext)) {
-            openNotificationListenerSettings()
-        }
-
         showDeviceTokenPrompt()
 
         val filter = IntentFilter("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
@@ -55,7 +50,15 @@ class MainActivity : AppCompatActivity() {
 
         enableSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (!isNotificationListenerEnabled(applicationContext)) {
-                openNotificationListenerSettings()
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.alert_require_notification_listener_permission_title)
+                    .setMessage(R.string.alert_require_notification_listener_permission_message)
+                    .setPositiveButton(
+                        R.string.alert_button_ok,
+                        DialogInterface.OnClickListener { _, _ ->
+                            openNotificationListenerSettings()
+                        })
+                    .show()
             } else if (isChecked && AppHelper.Settings.getString(
                     getString(R.string.pref_key_device_token),
                     null
