@@ -14,10 +14,10 @@ Currently, the first version of A2PNS supports Android to iOS notification deliv
 To build Android app:
 
 1. Open the project in Android Studio
-2. In package org.xlfdll.a2pns, create Kotlin code file named ''ExternalData.kt'' and add the following:
+2. In package org.xlfdll.a2pns.models, create Kotlin code file named ''ExternalData.kt'' and add the following:
 
 ```
-package org.xlfdll.a2ipns
+package org.xlfdll.a2pns.models
 
 internal object ExternalData {
     // true - Debug Mode. Use development server as push notification service (e.g. Apple's PNS) destinations
