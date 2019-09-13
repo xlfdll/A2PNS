@@ -45,4 +45,6 @@
     <string name="alert_require_notification_listener_permission_title">需要通知监听权限</string>
     <string name="alert_require_notification_listener_permission_message">应用没有通知监听权限。请在随后出现的界面里允许通知监听权限。\n\n本应用需要通知监听权限以用来获取并转送其它应用或服务生成的通知。</string>
     <string name="alert_button_ok">OK</string>
+    <string name="button_startup_back">&lt; 上一步</string>
+    <string name="button_startup_next">下一步 &gt;</string>
 </resources>

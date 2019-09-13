@@ -45,4 +45,6 @@
     <string name="alert_require_notification_listener_permission_title">通知監視権限必要</string>
     <string name="alert_require_notification_listener_permission_message">アプリは通知監視権限がございません。次の画面で通知監視権限を有効にしてください。\n\n他のアプリとサービスが生成した通知を捕獲・転送のため、通知監視権限は必要です。</string>
     <string name="alert_button_ok">OK</string>
+    <string name="button_startup_back">&lt; 戻る</string>
+    <string name="button_startup_next">次へ &gt;</string>
 </resources>
