@@ -1,10 +1,11 @@
-package org.xlfdll.a2pns
+package org.xlfdll.a2pns.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.models.NotificationItem
 
 class NotificationListAdapter(private val notificationItemList: ArrayList<NotificationItem>) :

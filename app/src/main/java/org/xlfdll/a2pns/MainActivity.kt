@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import org.xlfdll.a2pns.adapters.NotificationListAdapter
 import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.ViewHelper
 import org.xlfdll.a2pns.models.NotificationItem
@@ -153,7 +154,8 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
 
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = NotificationListAdapter(ViewHelper.NotificationItemList)
+            adapter =
+                NotificationListAdapter(ViewHelper.NotificationItemList)
         }
     }
 
