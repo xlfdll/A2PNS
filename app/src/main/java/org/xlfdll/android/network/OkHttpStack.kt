@@ -15,7 +15,19 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class OkHttpStack : BaseHttpStack() {
     private val client = OkHttpClient()
 
-    override fun executeRequest(request: Request<*>?, additionalHeaders: MutableMap<String, String>?): HttpResponse {
+    override fun executeRequest(
+        request: Request<*>?,
+        additionalHeaders: MutableMap<String, String>?
+    ): HttpResponse {
+        val requestBuilder = initializeRequestBuilder(request, additionalHeaders)
+
+        return getHttpResponse(requestBuilder)
+    }
+
+    private fun initializeRequestBuilder(
+        request: Request<*>?,
+        additionalHeaders: MutableMap<String, String>?
+    ): okhttp3.Request.Builder {
         val requestBuilder = okhttp3.Request.Builder().url(request!!.url)
         val requestHeaders = request.headers
 
@@ -31,27 +43,35 @@ class OkHttpStack : BaseHttpStack() {
 
         setConnectionParametersForRequest(requestBuilder, request)
 
+        return requestBuilder
+    }
+
+    private fun getHttpResponse(requestBuilder: okhttp3.Request.Builder): HttpResponse {
         val response = client.newCall(requestBuilder.build()).execute()
         val responseHeaders = mutableListOf<Header>()
         val responseContentLength = response.body?.contentLength()
         val responseInputStream = response.body?.byteStream()
-        lateinit var httpResponse: HttpResponse
 
         for (header in response.headers) {
             responseHeaders.add(Header(header.first, header.second))
         }
 
-        if (responseContentLength != null && responseInputStream != null) {
-            httpResponse =
-                HttpResponse(response.code, responseHeaders, responseContentLength.toInt(), responseInputStream)
+        return if (responseContentLength != null && responseInputStream != null) {
+            HttpResponse(
+                response.code,
+                responseHeaders,
+                responseContentLength.toInt(),
+                responseInputStream
+            )
         } else {
-            httpResponse = HttpResponse(response.code, responseHeaders)
+            HttpResponse(response.code, responseHeaders)
         }
-
-        return httpResponse
     }
 
-    private fun setConnectionParametersForRequest(builder: okhttp3.Request.Builder, request: Request<*>) {
+    private fun setConnectionParametersForRequest(
+        builder: okhttp3.Request.Builder,
+        request: Request<*>
+    ) {
         when (request.method) {
             Request.Method.DEPRECATED_GET_OR_POST -> {
                 val postBody = createRequestBody(request)

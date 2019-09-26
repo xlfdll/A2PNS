@@ -16,8 +16,6 @@ public class JsonObjectRequestWithCustomHeaders(
     errorListener: Response.ErrorListener
 ) :
     JsonObjectRequest(method, url, jsonRequest, listener, errorListener) {
-
-
     override fun getHeaders(): MutableMap<String, String> {
         return customHeaders ?: super.getHeaders()
     }
