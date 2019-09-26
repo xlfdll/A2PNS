@@ -5,6 +5,8 @@ This is the repository of Android to Push Notification Service (Base App).
   <img src="https://github.com/xlfdll/xlfdll.github.io/raw/master/images/google-play-badge.png" alt="Get A2PNS (Android) on Google Play Store" height="64">
 </a>
 
+[Join iOS TestFlight!](https://testflight.apple.com/join/cbUVu5XI)
+
 ## Development
 Currently, the first version of A2PNS supports Android to iOS notification deliveries, and it is still under development.
 
