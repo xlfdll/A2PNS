@@ -29,9 +29,9 @@ class NotificationListener : NotificationListenerService() {
                 }
 
                 DataHelper.logNotificationItem(this, item)
-            }
 
-            broadcastNotificationItem(item)
+                broadcastNotificationItem(item)
+            }
         }
 
         super.onNotificationPosted(sbn)
