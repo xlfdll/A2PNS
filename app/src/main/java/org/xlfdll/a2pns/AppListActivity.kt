@@ -24,7 +24,7 @@ class AppListActivity : AppCompatActivity() {
 
         this.title = getString(R.string.pref_title_action_bar_select_apps)
 
-        selectedApps = HashSet<String>()
+        selectedApps = HashSet()
 
         val selectAppSet =
             AppHelper.Settings.getStringSet(getString(R.string.pref_key_selected_apps), null)

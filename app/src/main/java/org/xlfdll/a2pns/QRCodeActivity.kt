@@ -2,6 +2,7 @@ package org.xlfdll.a2pns
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,59 +19,11 @@ class QRCodeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrcode)
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), 0)
-        }
+        requestCameraPermissions()
 
         val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
 
-        codeScanner = CodeScanner(this, scannerView)
-
-        // Parameters (default values)
-        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
-        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
-        // ex. listOf(BarcodeFormat.QR_CODE)
-        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
-        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
-        codeScanner.isFlashEnabled = false // Whether to enable flash or not
-
-        // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
-            runOnUiThread {
-                val token = getDeviceToken(it.text)
-
-                if (token != null) {
-                    val prefEditor = AppHelper.Settings.edit()
-
-                    prefEditor.putString(getString(R.string.pref_key_device_token), token)
-                        .commit()
-
-                    Toast.makeText(
-                        this,
-                        getString(R.string.toast_device_token_pair_success_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    finish()
-                } else {
-                    codeScanner.startPreview()
-                }
-            }
-        }
-        codeScanner.errorCallback = ErrorCallback {
-            // or ErrorCallback.SUPPRESS
-            runOnUiThread {
-                Toast.makeText(
-                    this, getString(R.string.toast_device_token_camera_init_error) + it.message,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        codeScanner = createCodeScanner(scannerView)
 
         scannerView.setOnClickListener {
             codeScanner.startPreview()
@@ -87,6 +40,54 @@ class QRCodeActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    private fun requestCameraPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), 0)
+        }
+    }
+
+    private fun createCodeScanner(scannerView: CodeScannerView): CodeScanner {
+        val codeScanner = CodeScanner(this, scannerView)
+
+        // Parameters (default values)
+        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
+        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
+        // ex. listOf(BarcodeFormat.QR_CODE)
+        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
+        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
+        codeScanner.isFlashEnabled = false // Whether to enable flash or not
+
+        // Callbacks
+        codeScanner.decodeCallback = DecodeCallback {
+            runOnUiThread {
+                val token = getDeviceToken(it.text)
+
+                if (token != null) {
+                    saveDeviceToken(token)
+
+                    showPairSuccessToast()
+
+                    finish()
+                } else {
+                    codeScanner.startPreview()
+                }
+            }
+        }
+        codeScanner.errorCallback = ErrorCallback {
+            // or ErrorCallback.SUPPRESS
+            runOnUiThread {
+                showCameraErrorToast(it)
+            }
+        }
+
+        return codeScanner
+    }
+
     private fun getDeviceToken(json: String): String? {
         try {
             val jsonObject = JSONObject(json)
@@ -99,5 +100,27 @@ class QRCodeActivity : AppCompatActivity() {
         }
 
         return null
+    }
+
+    private fun saveDeviceToken(token: String?) {
+        val prefEditor = AppHelper.Settings.edit()
+
+        prefEditor.putString(getString(R.string.pref_key_device_token), token)
+            .commit()
+    }
+
+    private fun showPairSuccessToast() {
+        Toast.makeText(
+            this,
+            getString(R.string.toast_device_token_pair_success_message),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showCameraErrorToast(it: Exception) {
+        Toast.makeText(
+            this, getString(R.string.toast_device_token_camera_init_error) + it.message,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

@@ -22,12 +22,20 @@ internal object AppHelper {
     var isLaunched = false
 
     fun init(context: Context) {
+        initAPNSServerURL()
+        initAppSettings(context)
+        initHttpStack(context)
+    }
+
+    private fun initAPNSServerURL() {
         if (ExternalData.DebugMode) {
             APNSServerURL = "https://api.sandbox.push.apple.com"
         } else {
             APNSServerURL = "https://api.push.apple.com"
         }
+    }
 
+    private fun initAppSettings(context: Context) {
         if (!(AppHelper::Settings.isInitialized)) {
             Settings = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -44,7 +52,9 @@ internal object AppHelper {
                     .commit()
             }
         }
+    }
 
+    private fun initHttpStack(context: Context) {
         if (!(AppHelper::HttpRequestQueue.isInitialized)) {
             HttpRequestQueue = Volley.newRequestQueue(context, OkHttpStack())
         }

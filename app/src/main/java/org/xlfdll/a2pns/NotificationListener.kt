@@ -3,12 +3,13 @@ package org.xlfdll.a2pns
 import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.CryptoHelper
+import org.xlfdll.a2pns.helpers.DataHelper
 import org.xlfdll.a2pns.models.ExternalData
 import org.xlfdll.a2pns.models.NotificationItem
 import org.xlfdll.android.network.JsonObjectRequestWithCustomHeaders
@@ -16,72 +17,69 @@ import org.xlfdll.android.network.JsonObjectRequestWithCustomHeaders
 class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         if (AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)) {
-            var source = sbn?.packageName
-
-            if (source != null) {
-                source = packageManager.getPackageInfo(source, 0).applicationInfo.loadLabel(
-                    packageManager
-                ).toString()
-            }
-
-            val item = NotificationItem(
-                sbn?.notification?.extras?.getString("android.title") ?: "",
-                sbn?.notification?.extras?.getString("android.text") ?: "",
-                source ?: "<Unknown>",
-                sbn?.packageName ?: ""
-            )
+            val item = generateNotificationItem(sbn)
 
             if (AppHelper.Settings.getStringSet(
                     getString(R.string.pref_key_selected_apps),
                     null
                 )?.contains(item.packageName) == true
             ) {
-                val authToken =
-                    AppHelper.Settings.getString(getString(R.string.pref_key_auth_token), null)
-
-                if (authToken != null) {
-                    val authTokenPackage = JSONObject(authToken)
-                    val jwt = CryptoHelper.getAPNSBearerToken(authTokenPackage)
-                    val headers = HashMap<String, String>()
-
-                    headers["Authorization"] = "bearer $jwt"
-                    headers["apns-push-type"] = "alert"
-                    headers["apns-topic"] = authTokenPackage.getString("id")
-
-                    if (jwt != null) {
-                        val jsonObject = generateAppleJSONObject(item)
-                        val request = JsonObjectRequestWithCustomHeaders(Request.Method.POST,
-                            AppHelper.APNSServerURL + "/3/device/${AppHelper.Settings.getString(
-                                getString(R.string.pref_key_device_token),
-                                ""
-                            )}",
-                            headers,
-                            jsonObject,
-                            Response.Listener { response ->
-                            },
-                            Response.ErrorListener { error ->
-                            })
-
-                        if (!ExternalData.MockMode) {
-                            AppHelper.HttpRequestQueue.add(request)
-                        }
-
-                        Log.i(
-                            getString(R.string.app_name),
-                            "Message from ${item.source} (${item.packageName})"
-                        )
-                    }
+                if (!ExternalData.MockMode) {
+                    sendNotificationItem(item)
                 }
 
-                val intent = Intent("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
-
-                intent.putExtra("notification_item", item)
-
-                sendBroadcast(intent)
+                DataHelper.logNotificationItem(this, item)
             }
+
+            broadcastNotificationItem(item)
         }
 
         super.onNotificationPosted(sbn)
+    }
+
+    private fun generateNotificationItem(sbn: StatusBarNotification?): NotificationItem {
+        var source = sbn?.packageName
+
+        if (source != null) {
+            source = packageManager.getPackageInfo(source, 0).applicationInfo.loadLabel(
+                packageManager
+            ).toString()
+        }
+
+        val item = NotificationItem(
+            sbn?.notification?.extras?.getString("android.title") ?: "",
+            sbn?.notification?.extras?.getString("android.text") ?: "",
+            source ?: "<Unknown>",
+            sbn?.packageName ?: ""
+        )
+        return item
+    }
+
+    private fun sendNotificationItem(item: NotificationItem) {
+        val authToken =
+            AppHelper.Settings.getString(getString(R.string.pref_key_auth_token), null)
+
+        if (authToken != null) {
+            val deviceToken = AppHelper.Settings.getString(
+                getString(R.string.pref_key_device_token),
+                ""
+            )
+            val request = generateAppleJSONObjectRequest(
+                item, authToken, deviceToken!!
+            )
+
+            if (request != null) {
+                AppHelper.HttpRequestQueue.add(request)
+            }
+        }
+    }
+
+    private fun broadcastNotificationItem(item: NotificationItem) {
+        val intent = Intent("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
+
+        intent.putExtra("notification_item", item)
+
+        sendBroadcast(intent)
     }
 
     private fun generateAppleJSONObject(item: NotificationItem): JSONObject {
@@ -106,5 +104,33 @@ class NotificationListener : NotificationListenerService() {
         rootJsonObject.put("package", item.packageName)
 
         return rootJsonObject
+    }
+
+    private fun generateAppleJSONObjectRequest(
+        item: NotificationItem,
+        authToken: String,
+        deviceToken: String
+    ): JsonObjectRequest? {
+        val authTokenPackage = JSONObject(authToken)
+        val jwt = CryptoHelper.getAPNSBearerToken(authTokenPackage)
+        val headers = HashMap<String, String>()
+
+        headers["Authorization"] = "bearer $jwt"
+        headers["apns-push-type"] = "alert"
+        headers["apns-topic"] = authTokenPackage.getString("id")
+
+        if (jwt != null) {
+            val jsonObject = generateAppleJSONObject(item)
+            return JsonObjectRequestWithCustomHeaders(Request.Method.POST,
+                AppHelper.APNSServerURL + "/3/device/${deviceToken}",
+                headers,
+                jsonObject,
+                Response.Listener { response ->
+                },
+                Response.ErrorListener { error ->
+                })
+        }
+
+        return null
     }
 }
