@@ -46,13 +46,13 @@ class NotificationListener : NotificationListenerService() {
             ).toString()
         }
 
-        val item = NotificationItem(
-            sbn?.notification?.extras?.getString("android.title") ?: "",
-            sbn?.notification?.extras?.getString("android.text") ?: "",
+        // SpannableString cannot be casted to String directly. Use toString() to convert
+        return NotificationItem(
+            sbn?.notification?.extras?.get("android.title")?.toString() ?: "",
+            sbn?.notification?.extras?.get("android.text")?.toString() ?: "",
             source ?: "<Unknown>",
             sbn?.packageName ?: ""
         )
-        return item
     }
 
     private fun sendNotificationItem(item: NotificationItem) {
