@@ -2,49 +2,61 @@
 <resources>
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android通知転送サービス</string>
-    <string name="switch_enable_text">サービス有効</string>
-    <string name="button_clear_history_text">通知歴史をクリア</string>
 
-    <string name="action_settings">設定</string>
-    <string name="action_search">検索</string>
-    <string name="action_select_all">すべて選択</string>
-    <string name="action_clear_all">すべて選択解除</string>
-
-    <string name="instruction_device_token_pair">カメラでターゲットデバイスの画面に表示されるA2PNSのQRコードをスキャンし、ペアリングを行う</string>
-
-    <string name="notification_channel_name">Android通知転送サービス</string>
+    <!-- Notification Icon -->
+    <string name="notification_channel_name">Android通知転送サービス</string>otherwise
     <string name="notification_channel_description">Android通知転送サービス</string>
     <string name="notification_running_text">サービス実行中</string>
 
-    <string name="toast_device_token_pair_success_message">デバイスペアリング成功</string>
-    <string name="toast_device_token_camera_init_error">カメラ初期化エラー：</string>
+    <!-- Startup Activity -->
+    <string name="button_startup_back">&lt; 戻る</string>
+    <string name="button_startup_next">次へ &gt;</string>
+    <string name="button_startup_finish">完成</string>
+    <string name="fragment_startup_notification_listener_permission_title">通知監視権限を許可</string>
+    <string name="fragment_startup_notification_listener_permission_text"><i>ルールを守らければならない</i>…\n\nA2PNSアプリを使用するために、通知監視権限が必要であります。以下のボタンをタップし、次の画面で権限を許可し、アプリに戻ってください。\n\n<b>なぜ？</b> このアプリは通知監視権限を受け、他のアプリ・サービスの通知を捕獲・指定ユーザーのデバイスに転送することができます。</string>
+    <string name="fragment_startup_device_token_title">デバイスをペアリング</string>
+    <string name="fragment_startup_device_token_text">A2PNSを使用し、通知を転送する前に、デバイスをペアリングしなければなりません（そうしないと、どこに転送するかとわからない、でしょう？）\n\n以下のボタンをタップし、画面の指示に従ってください！</string>
+    <string name="fragment_startup_app_list_title">監視されるアプリを選択</string>
+    <string name="fragment_startup_app_list_text">もちろん、全部の通知を収集することが要りません。多～すぎる！\n\n逆に、以下のボタンをタップし、通知が監視したいアプリを選択しましょう！</string>
+    <string name="fragment_startup_finish_title">完成！</string>
+    <string name="fragment_startup_finish_text">初回セットアップは完成！\n\n次：サービスを有効にします。これだけ、以上です！</string>
+    <string name="toast_startup_notification_listener_permission_not_granted">通知監視権限がまだ許可されていません。\n\n「通知監視権限を許可」ページに戻ってください。</string>
+    <string name="toast_startup_device_not_paired">デバイスがまだペアリングされていません。\n\n「デバイスをペアリング」ページに戻ってください。</string>
 
-    <string name="toast_token_updated_message">通知サービスの認証トークンを更新しました</string>
-    <string name="toast_token_no_need_to_update_message">通知サービスの認証トークンは最新です。\n更新がいりません。</string>
-    <string name="alert_token_download_error_message">通知サービスの認証トークンは同期できません。\nインターネット接続をチェックし、もう一度やり直してください。</string>
+    <!-- Main Activity -->
+    <string name="switch_enable_text">サービス有効</string>
+    <string name="button_clear_history_text">通知歴史をクリア</string>
 
-    <string name="alert_button_yes">はい</string>
-    <string name="alert_button_no">いいえ</string>
-    <string name="alert_button_cancel">キャンセル</string>
-
-    <string name="alert_no_device_token_title">デバイストークンが設定されていません</string>
-    <string name="alert_no_device_token_message">デバイスペアリングがまだ設定されていません。\n\n今すぐデバイスをペアリングしますか？</string>
+    <!-- Settings Activity -->
     <string name="title_activity_settings">設定</string>
-
-    <!-- Preferences -->
+    <string name="action_settings">設定</string>
     <string name="pref_category_title_general">全般</string>
     <string name="pref_title_pair_device">QRコードでデバイスをペアする</string>
     <string name="pref_title_sync_auth_token">通知サービスの認証トークンを同期</string>
     <string name="pref_title_select_apps">通知転送のアプリを選択</string>
-
     <string name="pref_category_title_custom">カスタム</string>
     <string name="pref_title_set_custom_auth_token_url">カスタム認証トークンサーバURLを設定</string>
     <string name="pref_title_set_custom_auth_token_secret">カスタム認証トークン復号鍵を設定</string>
 
+    <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">アプリを選択</string>
-    <string name="alert_require_notification_listener_permission_title">通知監視権限必要</string>
-    <string name="alert_require_notification_listener_permission_message">アプリは通知監視権限がございません。次の画面で通知監視権限を有効にしてください。\n\n他のアプリとサービスが生成した通知を捕獲・転送のため、通知監視権限は必要です。</string>
+    <string name="action_search">検索</string>
+    <string name="action_select_all">すべて選択</string>
+    <string name="action_clear_all">すべて選択解除</string>
+
+    <!-- QR Code Activity -->
+    <string name="instruction_device_token_pair">カメラでターゲットデバイスの画面に表示されるA2PNSのQRコードをスキャンし、ペアリングを行う</string>
+    <string name="toast_device_token_pair_success_message">デバイスペアリング成功</string>
+    <string name="toast_device_token_camera_init_error">カメラ初期化エラー：</string>
+
+    <!-- Common Buttons -->
     <string name="alert_button_ok">OK</string>
-    <string name="button_startup_back">&lt; 戻る</string>
-    <string name="button_startup_next">次へ &gt;</string>
+    <string name="alert_button_yes">はい</string>
+    <string name="alert_button_no">いいえ</string>
+    <string name="alert_button_cancel">キャンセル</string>
+
+    <!-- APS Authentication Token Sync -->
+    <string name="toast_token_updated_message">通知サービスの認証トークンを更新しました</string>
+    <string name="toast_token_no_need_to_update_message">通知サービスの認証トークンは最新です。\n更新がいりません。</string>
+    <string name="alert_token_download_error_message">通知サービスの認証トークンは同期できません。\nインターネット接続をチェックし、もう一度やり直してください。</string>
 </resources>

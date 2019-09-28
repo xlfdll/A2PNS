@@ -2,49 +2,61 @@
 <resources>
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android多机推送通知服务</string>
+
+    <!-- Notification Icon -->
+    <string name="notification_channel_name">Android多机推送通知服务</string>
+    <string name="notification_channel_description">Android多机推送通知服务</string>
+    <string name="notification_running_text">服务正在运行</string>
+
+    <!-- Startup Activity -->
+    <string name="button_startup_back">&lt; 上一步</string>
+    <string name="button_startup_next">下一步 &gt;</string>
+    <string name="button_startup_finish">完成</string>
+    <string name="fragment_startup_notification_listener_permission_title">启用通知监听权限</string>
+    <string name="fragment_startup_notification_listener_permission_text"><i>我们要遵守规则</i>…要使用A2PNS应用，通知监听权限是必需的。请点击下面的按钮启用通知监听权限，然后回到本应用并继续\n\n<b>为什么？</b> 本应用需要通知监听权限来获取其它应用或服务生成的通知，以用来转送至指定的用户设备中。</string>
+    <string name="fragment_startup_device_token_title">配对设备</string>
+    <string name="fragment_startup_device_token_text">在使用A2PNS进行通知转送之前，我们需要配对手上的设备（不然我们不知道往哪儿送对吧？）。\n\n只需点击下面的按钮并遵循指示即可！</string>
+    <string name="fragment_startup_app_list_title">选择要监听的应用</string>
+    <string name="fragment_startup_app_list_text">我们当然不想收集所有的应用通知，那样就太！多！了！\n\n相反，点击下面的按钮选择要监听的应用吧！</string>
+    <string name="fragment_startup_finish_title">完成！</string>
+    <string name="fragment_startup_finish_text">首次运行设置完成了！\n\n下一步：只需要启用服务，然后就OK了！</string>
+    <string name="toast_startup_notification_listener_permission_not_granted">通知监听权限没有被启用。\n\n请回到“启用通知监听权限”页面。</string>
+    <string name="toast_startup_device_not_paired">设备未配对。\n\n请回到“配对设备”页面。</string>
+
+    <!-- Main Activity -->
     <string name="switch_enable_text">启用服务</string>
     <string name="button_clear_history_text">清除通知历史</string>
 
+    <!-- Settings Activity -->
+    <string name="title_activity_settings">设置</string>
+    <string name="pref_category_title_general">一般</string>
+    <string name="pref_title_pair_device">用二维码配对设备</string>
+    <string name="pref_title_sync_auth_token">同步推送通知服务验证令牌</string>
+    <string name="pref_title_select_apps">选择要转送通知的应用</string>
+    <string name="pref_category_title_custom">自定义</string>
+    <string name="pref_title_set_custom_auth_token_url">设定自定义验证令牌服务器URL地址</string>
+    <string name="pref_title_set_custom_auth_token_secret">设定自定义令牌解密密钥</string>
+
+    <!-- App List Activity -->
+    <string name="pref_title_action_bar_select_apps">选择应用</string>
     <string name="action_settings">设置</string>
     <string name="action_search">搜索</string>
     <string name="action_select_all">全选</string>
     <string name="action_clear_all">取消全选</string>
 
+    <!-- QR Code Activity -->
     <string name="instruction_device_token_pair">用相机对准要配对设备屏幕上显示的对应A2PNS二维码以完成配对过程</string>
-
-    <string name="notification_channel_name">Android多机推送通知服务</string>
-    <string name="notification_channel_description">Android多机推送通知服务</string>
-    <string name="notification_running_text">服务正在运行</string>
-
     <string name="toast_device_token_pair_success_message">设备配对成功</string>
     <string name="toast_device_token_camera_init_error">相机初始化错误：</string>
 
-    <string name="toast_token_updated_message">推送通知服务验证令牌已成功更新</string>
-    <string name="toast_token_no_need_to_update_message">推送通知服务验证令牌已经为最新，无需更新。</string>
-    <string name="alert_token_download_error_message">推送通知服务验证令牌无法同步。\n请检查互联网连接并重试。</string>
-
+    <!-- Common Buttons -->
+    <string name="alert_button_ok">OK</string>
     <string name="alert_button_yes">是</string>
     <string name="alert_button_no">否</string>
     <string name="alert_button_cancel">取消</string>
 
-    <string name="alert_no_device_token_title">设备令牌未设置</string>
-    <string name="alert_no_device_token_message">配对的设备令牌没有设置。\n\n现在要配对您的设备吗？</string>
-    <string name="title_activity_settings">设置</string>
-
-    <!-- Preferences -->
-    <string name="pref_category_title_general">一般</string>
-    <string name="pref_title_pair_device">用二维码配对设备</string>
-    <string name="pref_title_sync_auth_token">同步推送通知服务验证令牌</string>
-    <string name="pref_title_select_apps">选择要转送通知的应用</string>
-
-    <string name="pref_category_title_custom">自定义</string>
-    <string name="pref_title_set_custom_auth_token_url">设定自定义验证令牌服务器URL地址</string>
-    <string name="pref_title_set_custom_auth_token_secret">设定自定义令牌解密密钥</string>
-
-    <string name="pref_title_action_bar_select_apps">选择应用</string>
-    <string name="alert_require_notification_listener_permission_title">需要通知监听权限</string>
-    <string name="alert_require_notification_listener_permission_message">应用没有通知监听权限。请在随后出现的界面里允许通知监听权限。\n\n本应用需要通知监听权限以用来获取并转送其它应用或服务生成的通知。</string>
-    <string name="alert_button_ok">OK</string>
-    <string name="button_startup_back">&lt; 上一步</string>
-    <string name="button_startup_next">下一步 &gt;</string>
+    <!-- APS Authentication Token Sync -->
+    <string name="toast_token_updated_message">推送通知服务验证令牌已成功更新</string>
+    <string name="toast_token_no_need_to_update_message">推送通知服务验证令牌已经为最新，无需更新。</string>
+    <string name="alert_token_download_error_message">推送通知服务验证令牌无法同步。\n请检查互联网连接并重试。</string>
 </resources>

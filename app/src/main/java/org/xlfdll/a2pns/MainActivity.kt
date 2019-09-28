@@ -4,17 +4,17 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.xlfdll.a2pns.adapters.NotificationListAdapter
@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         // Has to set title here, as manifest's label attributes do not work consistently
         this.title = getString(R.string.app_title)
 
-        initApp()
-        showDeviceTokenPrompt()
+        // App settings
+        AppHelper.init(applicationContext)
 
         val filter = IntentFilter("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
 
@@ -45,6 +45,18 @@ class MainActivity : AppCompatActivity() {
         enableSwitch.setOnCheckedChangeListener { _, isChecked ->
             handleEnableSwitchStateChange(isChecked)
         }
+
+        if (!AppHelper.Settings.getBoolean(
+                getString(R.string.pref_ns_key_is_first_run_done),
+                false
+            )
+        ) {
+            startActivity(Intent(this, StartupActivity::class.java))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         enableSwitch.isChecked =
             AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)
@@ -76,82 +88,6 @@ class MainActivity : AppCompatActivity() {
         notificationRecyclerView.adapter?.notifyDataSetChanged()
     }
 
-    private fun initApp() {
-        if (!AppHelper.isLaunched) {
-            // App settings
-            AppHelper.init(applicationContext)
-
-            // Update APNS authentication token
-            ViewHelper.updateAPNSAuthToken(this)
-
-            AppHelper.isLaunched = true
-        }
-    }
-
-    private fun isNotificationListenerEnabled(context: Context): Boolean {
-        return NotificationManagerCompat.getEnabledListenerPackages(this)
-            .contains(context.packageName)
-    }
-
-    private fun openNotificationListenerSettings() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-        } else {
-            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-        }
-    }
-
-    private fun handleEnableSwitchStateChange(isChecked: Boolean) {
-        if (!isNotificationListenerEnabled(applicationContext)) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.alert_require_notification_listener_permission_title)
-                .setMessage(R.string.alert_require_notification_listener_permission_message)
-                .setPositiveButton(
-                    R.string.alert_button_ok
-                ) { _, _ ->
-                    openNotificationListenerSettings()
-                }
-                .show()
-        } else if (isChecked && AppHelper.Settings.getString(
-                getString(R.string.pref_key_device_token),
-                null
-            ) == null
-        ) {
-            enableSwitch.isChecked = false
-
-            showDeviceTokenPrompt()
-        } else {
-            saveServiceEnabledState(isChecked)
-
-            if (isChecked) {
-                showNotificationIcon()
-            } else {
-                hideNotificationIcon()
-            }
-        }
-    }
-
-    private fun showDeviceTokenPrompt() {
-        if (AppHelper.Settings.getString(
-                getString(R.string.pref_key_device_token),
-                null
-            ) == null
-        ) {
-            val builder = AlertDialog.Builder(this)
-
-            builder.setTitle(R.string.alert_no_device_token_title)
-                .setMessage(R.string.alert_no_device_token_message)
-                .setPositiveButton(
-                    R.string.alert_button_yes
-                ) { _, _ ->
-                    startActivity(Intent(this, QRCodeActivity::class.java))
-                }
-                .setNegativeButton(R.string.alert_button_no, null)
-                .create()
-                .show()
-        }
-    }
-
     private fun initNotificationList() {
         notificationRecyclerView.apply {
             setHasFixedSize(true)
@@ -162,11 +98,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveServiceEnabledState(isChecked: Boolean) {
-        val prefEditor = AppHelper.Settings.edit()
-
-        prefEditor.putBoolean(getString(R.string.pref_key_enable_service), isChecked)
+    private fun handleEnableSwitchStateChange(isChecked: Boolean) {
+        AppHelper.Settings.edit()
+            .putBoolean(getString(R.string.pref_key_enable_service), isChecked)
             .commit()
+
+        if (isChecked) {
+            showNotificationIcon()
+        } else {
+            hideNotificationIcon()
+        }
     }
 
     private fun showNotificationIcon() {

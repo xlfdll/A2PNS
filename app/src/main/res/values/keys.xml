@@ -8,6 +8,7 @@
     <string name="pref_key_custom_auth_token_url">CustomAuthTokenURL</string>
     <string name="pref_key_custom_auth_token_secret">CustomAuthTokenSecret</string>
 
+    <string name="pref_ns_key_is_first_run_done">IsFirstRunDone</string>
     <string name="pref_ns_key_sync_auth_token">SyncAuthToken</string>
     <string name="pref_ns_key_pair_device">PairDevice</string>
     <string name="pref_ns_key_select_apps">SelectApps</string>

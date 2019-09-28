@@ -3,6 +3,7 @@ package org.xlfdll.a2pns.helpers
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.core.app.NotificationManagerCompat
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import org.xlfdll.a2pns.R
@@ -18,8 +19,6 @@ internal object AppHelper {
     lateinit var APNSServerURL: String
     lateinit var Settings: SharedPreferences
     lateinit var HttpRequestQueue: RequestQueue
-
-    var isLaunched = false
 
     fun init(context: Context) {
         initAPNSServerURL()
@@ -58,5 +57,17 @@ internal object AppHelper {
         if (!(AppHelper::HttpRequestQueue.isInitialized)) {
             HttpRequestQueue = Volley.newRequestQueue(context, OkHttpStack())
         }
+    }
+
+    fun isNotificationListenerEnabled(context: Context): Boolean {
+        return NotificationManagerCompat.getEnabledListenerPackages(context)
+            .contains(context.packageName)
+    }
+
+    fun isDevicePaired(context: Context): Boolean {
+        return AppHelper.Settings.getString(
+            context.getString(R.string.pref_key_device_token),
+            null
+        ) != null
     }
 }
