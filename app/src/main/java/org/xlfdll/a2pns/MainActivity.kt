@@ -1,20 +1,14 @@
 package org.xlfdll.a2pns
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.xlfdll.a2pns.adapters.NotificationListAdapter
@@ -36,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         // App settings
         AppHelper.init(applicationContext)
 
-        val filter = IntentFilter("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
-
-        registerReceiver(receiver, filter)
-
         initNotificationList()
 
         enableSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -58,14 +48,18 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val filter = IntentFilter("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
+
+        registerReceiver(receiver, filter)
+
         enableSwitch.isChecked =
             AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)
     }
 
-    override fun onDestroy() {
-        unregisterReceiver(receiver)
+    override fun onPause() {
+        super.onPause()
 
-        super.onDestroy()
+        unregisterReceiver(receiver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,39 +98,10 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         if (isChecked) {
-            showNotificationIcon()
+            ViewHelper.showNotificationIcon(this)
         } else {
-            hideNotificationIcon()
+            ViewHelper.hideNotificationIcon(this)
         }
-    }
-
-    private fun showNotificationIcon() {
-        AppHelper.createAPNSNotificationChannel(this)
-
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
-
-        val notification = NotificationCompat.Builder(this, AppHelper.NOTIFICATION_CHANNEL_ID)
-            .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(getString(R.string.app_title))
-            .setContentText(getString(R.string.notification_running_text))
-            .setContentIntent(pendingIntent)
-            .build()
-
-        notification.flags =
-            notification.flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT
-
-        val notifier = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        notifier.notify(AppHelper.NOTIFICATION_ID, notification)
-    }
-
-    private fun hideNotificationIcon() {
-        val notifier =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        notifier.cancel(AppHelper.NOTIFICATION_ID)
     }
 
     inner class NotificationServiceReceiver : BroadcastReceiver() {
