@@ -66,7 +66,7 @@ class StartupActivity : AppCompatActivity() {
 
     private fun initAppFirstRun() {
         // Update APNS authentication token
-        ViewHelper.updateAPNSAuthToken(this)
+        AppHelper.updateAPNSAuthToken(this)
     }
 
     private fun updateNavigateButtonStates() {

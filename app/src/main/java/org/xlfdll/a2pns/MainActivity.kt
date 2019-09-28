@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNotificationIcon() {
-        createAPNSNotificationChannel()
+        AppHelper.createAPNSNotificationChannel(this)
 
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
@@ -137,23 +137,6 @@ class MainActivity : AppCompatActivity() {
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         notifier.cancel(AppHelper.NOTIFICATION_ID)
-    }
-
-    private fun createAPNSNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                AppHelper.NOTIFICATION_CHANNEL_ID,
-                getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-
-            notificationChannel.description = getString(R.string.notification_channel_description)
-
-            val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
     }
 
     inner class NotificationServiceReceiver : BroadcastReceiver() {
