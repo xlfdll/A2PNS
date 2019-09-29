@@ -1,9 +1,6 @@
 package org.xlfdll.a2pns
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,7 +11,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.xlfdll.a2pns.adapters.NotificationListAdapter
 import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.ViewHelper
-import org.xlfdll.a2pns.models.NotificationItem
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,9 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clearHistoryAction(view: View) {
-        ViewHelper.NotificationItemList.clear()
-
-        notificationRecyclerView.adapter?.notifyDataSetChanged()
+        ViewHelper.clearNotificationItems()
     }
 
     private fun initNotificationList() {
@@ -77,8 +71,7 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
 
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter =
-                NotificationListAdapter(ViewHelper.NotificationItemList)
+            adapter = ViewHelper.notificationListAdapter
         }
     }
 
@@ -88,9 +81,9 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         if (isChecked) {
-            ViewHelper.showNotificationIcon(this)
+            startService(Intent(this, NotificationListener::class.java))
         } else {
-            ViewHelper.hideNotificationIcon(this)
+            stopService(Intent(this, NotificationListener::class.java))
         }
     }
 }

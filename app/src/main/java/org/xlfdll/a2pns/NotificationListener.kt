@@ -1,5 +1,8 @@
 package org.xlfdll.a2pns
 
+import android.content.ComponentName
+import android.content.pm.PackageManager
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.android.volley.Request
@@ -15,6 +18,21 @@ import org.xlfdll.a2pns.models.NotificationItem
 import org.xlfdll.android.network.JsonObjectRequestWithCustomHeaders
 
 class NotificationListener : NotificationListenerService() {
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+
+        startForeground(
+            AppHelper.NOTIFICATION_SERVICE_RUNNING_ID,
+            ViewHelper.getStatusIconNotification(this)
+        )
+    }
+
+    override fun onListenerDisconnected() {
+        stopForeground(true)
+
+        super.onListenerDisconnected()
+    }
+
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
 
@@ -35,9 +53,34 @@ class NotificationListener : NotificationListenerService() {
                 }
 
                 DataHelper.logNotificationItem(this, item)
-                ViewHelper.NotificationItemList.add(0, item)
+                ViewHelper.addNotificationItem(item)
             }
         }
+    }
+
+    private fun tryReconnectService() {
+        toggleNotificationListenerService()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val componentName = ComponentName(applicationContext, NotificationListener::class.java)
+
+            requestRebind(componentName)
+        }
+    }
+
+    private fun toggleNotificationListenerService() {
+        packageManager.setComponentEnabledSetting(
+            ComponentName(
+                this,
+                NotificationListener::class.java
+            ), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+        )
+        packageManager.setComponentEnabledSetting(
+            ComponentName(
+                this,
+                NotificationListener::class.java
+            ), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+        )
     }
 
     private fun generateNotificationItem(sbn: StatusBarNotification?): NotificationItem {

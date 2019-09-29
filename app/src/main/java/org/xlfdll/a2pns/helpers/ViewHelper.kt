@@ -1,20 +1,21 @@
 package org.xlfdll.a2pns.helpers
 
 import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import org.xlfdll.a2pns.MainActivity
 import org.xlfdll.a2pns.R
+import org.xlfdll.a2pns.adapters.NotificationListAdapter
 import org.xlfdll.a2pns.models.NotificationItem
 
 internal object ViewHelper {
-    val NotificationItemList = ArrayList<NotificationItem>()
+    private val notificationList = ArrayList<NotificationItem>()
+    val notificationListAdapter: NotificationListAdapter =
+        NotificationListAdapter(notificationList)
 
     fun showAPSTokenUpdatedToast(context: Context) {
         Toast.makeText(
@@ -41,7 +42,17 @@ internal object ViewHelper {
             .show()
     }
 
-    fun showNotificationIcon(context: Context) {
+    fun addNotificationItem(notificationItem: NotificationItem) {
+        notificationList.add(0, notificationItem)
+        notificationListAdapter.notifyDataSetChanged()
+    }
+
+    fun clearNotificationItems() {
+        notificationList.clear()
+        notificationListAdapter.notifyDataSetChanged()
+    }
+
+    fun getStatusIconNotification(context: Context): Notification {
         AppHelper.createAPNSNotificationChannel(context)
 
         val notificationIntent = Intent(context, MainActivity::class.java)
@@ -58,15 +69,6 @@ internal object ViewHelper {
         notification.flags =
             notification.flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT
 
-        val notifier = NotificationManagerCompat.from(context)
-
-        notifier.notify(AppHelper.NOTIFICATION_SERVICE_RUNNING_ID, notification)
-    }
-
-    fun hideNotificationIcon(context: Context) {
-        val notifier =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        notifier.cancel(AppHelper.NOTIFICATION_SERVICE_RUNNING_ID)
+        return notification
     }
 }
