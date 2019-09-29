@@ -6,6 +6,7 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.text.SpannableString
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -173,8 +174,12 @@ class NotificationListener : NotificationListenerService() {
                 AppHelper.apnsServerURL + "/3/device/${deviceToken}",
                 headers,
                 jsonObject,
-                Response.Listener { },
-                Response.ErrorListener { })
+                Response.Listener { response ->
+                    Log.i(getString(R.string.app_name), response.toString())
+                },
+                Response.ErrorListener { error ->
+                    Log.e(getString(R.string.app_name), error.toString())
+                })
         }
 
         return null
