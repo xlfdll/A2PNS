@@ -27,7 +27,7 @@
     <string name="switch_enable_text">启用服务</string>
     <string name="button_clear_history_text">清除通知历史</string>
 
-    <!-- Settings Activity -->
+    <!-- settings Activity -->
     <string name="title_activity_settings">设置</string>
     <string name="pref_category_title_general">一般</string>
     <string name="pref_title_pair_device">用二维码配对设备</string>

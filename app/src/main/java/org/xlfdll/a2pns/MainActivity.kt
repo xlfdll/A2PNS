@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import org.xlfdll.a2pns.adapters.NotificationListAdapter
 import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.ViewHelper
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         this.title = getString(R.string.app_title)
 
         // App settings
-        AppHelper.init(applicationContext)
+        AppHelper.init(this)
 
         initNotificationList()
 
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             handleEnableSwitchStateChange(isChecked)
         }
 
-        if (!AppHelper.Settings.getBoolean(
+        if (!AppHelper.settings.getBoolean(
                 getString(R.string.pref_ns_key_is_first_run_done),
                 false
             )
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         enableSwitch.isChecked =
-            AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)
+            AppHelper.settings.getBoolean(getString(R.string.pref_key_enable_service), false)
 
         notificationRecyclerView.adapter?.notifyDataSetChanged()
     }
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleEnableSwitchStateChange(isChecked: Boolean) {
-        AppHelper.Settings.edit()
+        AppHelper.settings.edit()
             .putBoolean(getString(R.string.pref_key_enable_service), isChecked)
             .commit()
 

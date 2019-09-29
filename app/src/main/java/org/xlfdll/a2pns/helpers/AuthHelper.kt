@@ -10,11 +10,11 @@ import org.xlfdll.a2pns.models.ExternalData
 
 internal object AuthHelper {
     fun updateAPNSAuthToken(context: Context) {
-        val url = AppHelper.Settings.getString(
+        val url = AppHelper.settings.getString(
             context.getString(R.string.pref_key_custom_auth_token_url),
             ExternalData.APNSAuthTokenURL
         )
-        val secret = AppHelper.Settings.getString(
+        val secret = AppHelper.settings.getString(
             context.getString(R.string.pref_key_custom_auth_token_secret),
             ExternalData.DecryptionSecret
         )
@@ -32,7 +32,7 @@ internal object AuthHelper {
                 ViewHelper.showAPSTokenErrorAlert(context)
             })
 
-        AppHelper.HttpRequestQueue.add(request)
+        AppHelper.httpRequestQueue.add(request)
     }
 
     private fun handleAuthResponse(
@@ -40,7 +40,7 @@ internal object AuthHelper {
         response: JSONObject,
         secret: String?
     ): Boolean {
-        val isAuthTokenLatest = response.getString("time") == AppHelper.Settings.getString(
+        val isAuthTokenLatest = response.getString("time") == AppHelper.settings.getString(
             context.getString(R.string.pref_key_auth_token_update_date),
             null
         )
@@ -66,7 +66,7 @@ internal object AuthHelper {
         token: String?,
         time: String
     ) {
-        val prefEditor = AppHelper.Settings.edit()
+        val prefEditor = AppHelper.settings.edit()
 
         prefEditor.putString(context.getString(R.string.pref_key_auth_token), token)
             .putString(

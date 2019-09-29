@@ -9,7 +9,7 @@ import android.preference.PreferenceManager
 import androidx.core.app.NotificationManagerCompat
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
-import org.xlfdll.a2pns.NotificationListener
+import org.xlfdll.a2pns.MainActivity
 import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.models.ExternalData
 import org.xlfdll.android.network.OkHttpStack
@@ -21,34 +21,37 @@ internal object AppHelper {
 
     // Development server: api.sandbox.push.apple.com:443
     // Production server: api.push.apple.com:443
-    lateinit var APNSServerURL: String
-    lateinit var Settings: SharedPreferences
-    lateinit var HttpRequestQueue: RequestQueue
+    lateinit var apnsServerURL: String
+    lateinit var settings: SharedPreferences
+    lateinit var httpRequestQueue: RequestQueue
+    lateinit var mainActivity: MainActivity
 
     fun init(context: Context) {
         initAPNSServerURL()
         initAppSettings(context)
         initHttpStack(context)
+
+        mainActivity = context as MainActivity
     }
 
     private fun initAPNSServerURL() {
         if (ExternalData.DebugMode) {
-            APNSServerURL = "https://api.sandbox.push.apple.com"
+            apnsServerURL = "https://api.sandbox.push.apple.com"
         } else {
-            APNSServerURL = "https://api.push.apple.com"
+            apnsServerURL = "https://api.push.apple.com"
         }
     }
 
     private fun initAppSettings(context: Context) {
-        if (!(AppHelper::Settings.isInitialized)) {
-            Settings = PreferenceManager.getDefaultSharedPreferences(context)
+        if (!(AppHelper::settings.isInitialized)) {
+            settings = PreferenceManager.getDefaultSharedPreferences(context)
 
-            if (Settings.getStringSet(
+            if (settings.getStringSet(
                     context.getString(R.string.pref_key_selected_apps),
                     null
                 ) == null
             ) {
-                Settings.edit()
+                settings.edit()
                     .putStringSet(
                         context.getString(R.string.pref_key_selected_apps),
                         hashSetOf("org.xlfdll.a2pns")
@@ -59,8 +62,8 @@ internal object AppHelper {
     }
 
     private fun initHttpStack(context: Context) {
-        if (!(AppHelper::HttpRequestQueue.isInitialized)) {
-            HttpRequestQueue = Volley.newRequestQueue(context, OkHttpStack())
+        if (!(AppHelper::httpRequestQueue.isInitialized)) {
+            httpRequestQueue = Volley.newRequestQueue(context, OkHttpStack())
         }
     }
 
@@ -88,7 +91,7 @@ internal object AppHelper {
     }
 
     fun isDevicePaired(context: Context): Boolean {
-        return AppHelper.Settings.getString(
+        return AppHelper.settings.getString(
             context.getString(R.string.pref_key_device_token),
             null
         ) != null

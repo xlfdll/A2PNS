@@ -34,7 +34,7 @@ class AppListActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        AppHelper.Settings.edit()
+        AppHelper.settings.edit()
             .putStringSet(getString(R.string.pref_key_selected_apps), selectedApps)
             .commit()
 
@@ -54,7 +54,7 @@ class AppListActivity : AppCompatActivity() {
     private fun collectSelectedApps(): MutableSet<String> {
         val selectedApps = hashSetOf<String>()
         val selectAppSet =
-            AppHelper.Settings.getStringSet(getString(R.string.pref_key_selected_apps), null)
+            AppHelper.settings.getStringSet(getString(R.string.pref_key_selected_apps), null)
 
         if (selectAppSet != null) {
             selectedApps.addAll(selectAppSet)

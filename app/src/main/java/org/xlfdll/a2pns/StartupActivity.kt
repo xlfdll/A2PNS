@@ -84,7 +84,7 @@ class StartupActivity : AppCompatActivity() {
         val isDevicePaired = AppHelper.isDevicePaired(this)
 
         if (isNotificationListenerEnabled && isDevicePaired) {
-            AppHelper.Settings.edit()
+            AppHelper.settings.edit()
                 .putBoolean(getString(R.string.pref_ns_key_is_first_run_done), true)
                 .commit()
 

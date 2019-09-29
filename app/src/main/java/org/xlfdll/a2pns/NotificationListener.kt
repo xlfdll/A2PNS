@@ -36,14 +36,14 @@ class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
 
-        if (sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID && AppHelper.Settings.getBoolean(
+        if (sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID && AppHelper.settings.getBoolean(
                 getString(R.string.pref_key_enable_service),
                 false
             )
         ) {
             val item = generateNotificationItem(sbn)
 
-            if (AppHelper.Settings.getStringSet(
+            if (AppHelper.settings.getStringSet(
                     getString(R.string.pref_key_selected_apps),
                     null
                 )?.contains(item.packageName) == true
@@ -103,10 +103,10 @@ class NotificationListener : NotificationListenerService() {
 
     private fun sendNotificationItem(item: NotificationItem) {
         val authToken =
-            AppHelper.Settings.getString(getString(R.string.pref_key_auth_token), null)
+            AppHelper.settings.getString(getString(R.string.pref_key_auth_token), null)
 
         if (authToken != null) {
-            val deviceToken = AppHelper.Settings.getString(
+            val deviceToken = AppHelper.settings.getString(
                 getString(R.string.pref_key_device_token),
                 ""
             )
@@ -115,7 +115,7 @@ class NotificationListener : NotificationListenerService() {
             )
 
             if (request != null) {
-                AppHelper.HttpRequestQueue.add(request)
+                AppHelper.httpRequestQueue.add(request)
             }
         }
     }
@@ -160,7 +160,7 @@ class NotificationListener : NotificationListenerService() {
         if (jwt != null) {
             val jsonObject = generateAppleJSONObject(item)
             return JsonObjectRequestWithCustomHeaders(Request.Method.POST,
-                AppHelper.APNSServerURL + "/3/device/${deviceToken}",
+                AppHelper.apnsServerURL + "/3/device/${deviceToken}",
                 headers,
                 jsonObject,
                 Response.Listener { response ->

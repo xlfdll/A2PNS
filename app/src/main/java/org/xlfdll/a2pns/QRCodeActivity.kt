@@ -104,7 +104,7 @@ class QRCodeActivity : AppCompatActivity() {
     }
 
     private fun saveDeviceToken(token: String?) {
-        val prefEditor = AppHelper.Settings.edit()
+        val prefEditor = AppHelper.settings.edit()
 
         prefEditor.putString(getString(R.string.pref_key_device_token), token)
             .commit()

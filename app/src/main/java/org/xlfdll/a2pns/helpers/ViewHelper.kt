@@ -44,12 +44,18 @@ internal object ViewHelper {
 
     fun addNotificationItem(notificationItem: NotificationItem) {
         notificationList.add(0, notificationItem)
-        notificationListAdapter.notifyDataSetChanged()
+
+        AppHelper.mainActivity.runOnUiThread {
+            notificationListAdapter.notifyDataSetChanged()
+        }
     }
 
     fun clearNotificationItems() {
         notificationList.clear()
-        notificationListAdapter.notifyDataSetChanged()
+
+        AppHelper.mainActivity.runOnUiThread {
+            notificationListAdapter.notifyDataSetChanged()
+        }
     }
 
     fun getStatusIconNotification(context: Context): Notification {

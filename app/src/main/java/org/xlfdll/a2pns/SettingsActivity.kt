@@ -6,9 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.AuthHelper
-import org.xlfdll.a2pns.helpers.ViewHelper
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

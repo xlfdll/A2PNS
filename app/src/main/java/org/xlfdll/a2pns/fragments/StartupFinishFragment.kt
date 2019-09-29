@@ -34,7 +34,7 @@ class StartupFinishFragment : Fragment() {
         val isDevicePaired = AppHelper.isDevicePaired(context!!)
 
         if (isNotificationListenerEnabled && isDevicePaired) {
-            AppHelper.Settings.edit()
+            AppHelper.settings.edit()
                 .putBoolean(getString(R.string.pref_key_enable_service), true)
                 .commit()
 
