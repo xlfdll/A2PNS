@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.xlfdll.a2pns.helpers.AppHelper
+import org.xlfdll.a2pns.helpers.AuthHelper
 import org.xlfdll.a2pns.helpers.ViewHelper
 
 class SettingsActivity : AppCompatActivity() {
@@ -74,7 +75,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
             findPreference<Preference>(getString(R.string.pref_ns_key_sync_auth_token))?.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    AppHelper.updateAPNSAuthToken(requireContext())
+                    AuthHelper.updateAPNSAuthToken(requireContext())
 
                     true
                 }

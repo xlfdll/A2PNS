@@ -14,7 +14,7 @@ import org.xlfdll.a2pns.fragments.StartupListenerPermissionFragment
 import org.xlfdll.a2pns.fragments.StartupPairDevicesFragment
 import org.xlfdll.a2pns.fragments.StartupSelectAppsFragment
 import org.xlfdll.a2pns.helpers.AppHelper
-import org.xlfdll.a2pns.helpers.ViewHelper
+import org.xlfdll.a2pns.helpers.AuthHelper
 
 class StartupActivity : AppCompatActivity() {
     private var currentPageIndex = 0
@@ -66,7 +66,7 @@ class StartupActivity : AppCompatActivity() {
 
     private fun initAppFirstRun() {
         // Update APNS authentication token
-        AppHelper.updateAPNSAuthToken(this)
+        AuthHelper.updateAPNSAuthToken(this)
     }
 
     private fun updateNavigateButtonStates() {
