@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import android.preference.PreferenceManager
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
+import androidx.preference.PreferenceManager
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import org.xlfdll.a2pns.MainActivity
