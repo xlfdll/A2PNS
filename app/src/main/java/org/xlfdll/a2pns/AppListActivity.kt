@@ -3,6 +3,7 @@ package org.xlfdll.a2pns
 import android.content.pm.PackageInfo
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +12,8 @@ import org.xlfdll.a2pns.adapters.AppListAdapter
 import org.xlfdll.a2pns.helpers.AppHelper
 
 class AppListActivity : AppCompatActivity() {
-    private lateinit var installedPackages: MutableList<PackageInfo>
+    private lateinit var installedPackages: List<PackageInfo>
+    private lateinit var displayedPackages: List<PackageInfo>
     private lateinit var selectedApps: MutableSet<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,26 +26,11 @@ class AppListActivity : AppCompatActivity() {
 
         this.title = getString(R.string.pref_title_action_bar_select_apps)
 
-        selectedApps = HashSet()
+        selectedApps = collectSelectedApps()
+        installedPackages = getInstalledPackages()
+        displayedPackages = filterInstalledPackages(null, installedPackages)
 
-        val selectAppSet =
-            AppHelper.Settings.getStringSet(getString(R.string.pref_key_selected_apps), null)
-
-        if (selectAppSet != null) {
-            selectedApps.addAll(selectAppSet)
-        }
-
-        installedPackages = packageManager.getInstalledPackages(0)
-        installedPackages.sortWith(compareBy { info ->
-            info.applicationInfo.loadLabel(packageManager).toString()
-        })
-
-        appListRecyclerView.apply {
-            setHasFixedSize(true)
-
-            layoutManager = LinearLayoutManager(this@AppListActivity)
-            adapter = AppListAdapter(selectedApps, installedPackages)
-        }
+        refreshAppListView()
     }
 
     override fun onDestroy() {
@@ -57,42 +44,68 @@ class AppListActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.action_bar_app_list, menu)
 
-        var menuItem = menu?.findItem(R.id.search)
+        setSearchViewBehavior(menu?.findItem(R.id.search))
+        setSelectAllBehavior(menu?.findItem(R.id.selectAll))
+        setClearAllBehavior(menu?.findItem(R.id.clearAll))
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun collectSelectedApps(): MutableSet<String> {
+        val selectedApps = hashSetOf<String>()
+        val selectAppSet =
+            AppHelper.Settings.getStringSet(getString(R.string.pref_key_selected_apps), null)
+
+        if (selectAppSet != null) {
+            selectedApps.addAll(selectAppSet)
+        }
+
+        return selectedApps
+    }
+
+    private fun getInstalledPackages(): List<PackageInfo> {
+        val installedPackages = packageManager.getInstalledPackages(0)
+
+        installedPackages.sortWith(compareBy { info ->
+            info.applicationInfo.loadLabel(packageManager).toString()
+        })
+
+        return installedPackages
+    }
+
+    private fun filterInstalledPackages(
+        keyword: String?,
+        installedPackages: List<PackageInfo>
+    ): List<PackageInfo> {
+        return if (keyword == null) {
+            installedPackages
+        } else {
+            val trimmedKeyword = keyword.trim()
+
+            installedPackages.filter { info ->
+                info.applicationInfo.loadLabel(packageManager).toString().contains(
+                    trimmedKeyword,
+                    true
+                ) || info.packageName.contains(trimmedKeyword, true)
+            }
+        }
+    }
+
+    private fun setSearchViewBehavior(menuItem: MenuItem?) {
         val searchView = menuItem?.actionView as SearchView
 
         menuItem.setOnMenuItemClickListener {
             searchView.requestFocus()
         }
+        menuItem.setOnActionExpandListener(SearchViewExpandListener())
 
         searchView.setIconifiedByDefault(false)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    val trimmedNewText = newText.trim()
+        searchView.setOnQueryTextListener(SearchViewQueryListener())
+    }
 
-                    val packageInfo = installedPackages.find { info ->
-                        info.applicationInfo.loadLabel(packageManager).toString().contains(
-                            trimmedNewText,
-                            true
-                        ) || info.packageName.contains(trimmedNewText, true)
-                    }
-
-                    if (packageInfo != null) {
-                        appListRecyclerView.scrollToPosition(installedPackages.indexOf(packageInfo))
-                    }
-                }
-
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-        })
-
-        menuItem = menu?.findItem(R.id.selectAll)
+    private fun setSelectAllBehavior(menuItem: MenuItem?) {
         menuItem?.setOnMenuItemClickListener {
-            for (info in installedPackages) {
+            for (info in displayedPackages) {
                 if (!selectedApps.contains(info.packageName)) {
                     selectedApps.add(info.packageName)
                 }
@@ -102,8 +115,9 @@ class AppListActivity : AppCompatActivity() {
 
             true
         }
+    }
 
-        menuItem = menu?.findItem(R.id.clearAll)
+    private fun setClearAllBehavior(menuItem: MenuItem?) {
         menuItem?.isEnabled = selectedApps.size > 0
         menuItem?.setOnMenuItemClickListener {
             selectedApps.clear()
@@ -112,7 +126,42 @@ class AppListActivity : AppCompatActivity() {
 
             true
         }
+    }
 
-        return super.onCreateOptionsMenu(menu)
+    private fun refreshAppListView() {
+        appListRecyclerView.apply {
+            setHasFixedSize(true)
+
+            layoutManager = LinearLayoutManager(this@AppListActivity)
+            adapter = AppListAdapter(selectedApps, displayedPackages)
+        }
+    }
+
+    inner class SearchViewQueryListener : SearchView.OnQueryTextListener {
+        override fun onQueryTextChange(newText: String?): Boolean {
+            displayedPackages = filterInstalledPackages(newText, installedPackages)
+
+            refreshAppListView()
+
+            return true
+        }
+
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return true
+        }
+    }
+
+    inner class SearchViewExpandListener : MenuItem.OnActionExpandListener {
+        override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+            return true
+        }
+
+        override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+            val searchView = item?.actionView as SearchView
+
+            searchView.setQuery(null, true)
+
+            return true
+        }
     }
 }
