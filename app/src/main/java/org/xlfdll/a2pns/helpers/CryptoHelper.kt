@@ -40,20 +40,19 @@ internal object CryptoHelper {
             val key = getPrivateKeyFromString(
                 authTokenPackage.getString("authKey")
             )
-            val jwt = Jwts.builder()
+
+            return Jwts.builder()
                 .setHeaderParam("kid", authTokenPackage.getString("authkeyid"))
                 .setIssuer(authTokenPackage.getString("teamid"))
                 .setIssuedAt(Calendar.getInstance(TimeZone.getTimeZone("UTC")).time)
                 .signWith(key)
                 .compact()
-
-            return jwt
         }
 
         return null
     }
 
-    fun getPrivateKeyFromString(keyPEM: String): PrivateKey {
+    private fun getPrivateKeyFromString(keyPEM: String): PrivateKey {
         val bytes = Base64.decode(
             Base64.decode(keyPEM, Base64.DEFAULT)
                 .toString(Charset.defaultCharset())
