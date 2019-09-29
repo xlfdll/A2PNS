@@ -1,6 +1,5 @@
 package org.xlfdll.a2pns
 
-import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.android.volley.Request
@@ -19,7 +18,11 @@ class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
 
-        if (AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)) {
+        if (sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID && AppHelper.Settings.getBoolean(
+                getString(R.string.pref_key_enable_service),
+                false
+            )
+        ) {
             val item = generateNotificationItem(sbn)
 
             if (AppHelper.Settings.getStringSet(

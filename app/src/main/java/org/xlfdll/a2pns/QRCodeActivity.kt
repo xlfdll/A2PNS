@@ -3,7 +3,6 @@ package org.xlfdll.a2pns
 import android.Manifest
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -137,6 +136,6 @@ class QRCodeActivity : AppCompatActivity() {
 
         val notifier = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        notifier.notify(AppHelper.NOTIFICATION_ID, notification)
+        notifier.notify(AppHelper.NOTIFICATION_PAIR_SUCCESS_ID, notification)
     }
 }

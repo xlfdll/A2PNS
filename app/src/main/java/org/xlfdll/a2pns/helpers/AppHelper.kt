@@ -15,7 +15,8 @@ import org.xlfdll.android.network.OkHttpStack
 
 internal object AppHelper {
     const val NOTIFICATION_CHANNEL_ID = "org.xlfdll.a2pns.notification"
-    const val NOTIFICATION_ID = 1
+    const val NOTIFICATION_SERVICE_RUNNING_ID = 1
+    const val NOTIFICATION_PAIR_SUCCESS_ID = 2
 
     // Development server: api.sandbox.push.apple.com:443
     // Production server: api.push.apple.com:443

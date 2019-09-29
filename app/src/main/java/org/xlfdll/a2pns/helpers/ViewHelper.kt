@@ -8,6 +8,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import org.xlfdll.a2pns.MainActivity
 import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.models.NotificationItem
@@ -57,15 +58,15 @@ internal object ViewHelper {
         notification.flags =
             notification.flags or Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT
 
-        val notifier = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notifier = NotificationManagerCompat.from(context)
 
-        notifier.notify(AppHelper.NOTIFICATION_ID, notification)
+        notifier.notify(AppHelper.NOTIFICATION_SERVICE_RUNNING_ID, notification)
     }
 
     fun hideNotificationIcon(context: Context) {
         val notifier =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        notifier.cancel(AppHelper.NOTIFICATION_ID)
+        notifier.cancel(AppHelper.NOTIFICATION_SERVICE_RUNNING_ID)
     }
 }
