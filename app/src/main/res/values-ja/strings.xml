@@ -24,6 +24,7 @@
     <string name="toast_startup_device_not_paired">デバイスがまだペアリングされていません。\n\n「デバイスをペアリング」ページに戻ってください。</string>
 
     <!-- Main Activity -->
+    <string name="button_notification_access_control">通知アクセスコントロール</string>
     <string name="button_clear_history_text">通知歴史をクリア</string>
 
     <!-- settings Activity -->
@@ -36,9 +37,6 @@
     <string name="pref_category_title_custom">カスタム</string>
     <string name="pref_title_set_custom_auth_token_url">カスタム認証トークンサーバURLを設定</string>
     <string name="pref_title_set_custom_auth_token_secret">カスタム認証トークン復号鍵を設定</string>
-    <string name="pref_category_title_advanced">高度な設定</string>
-    <string name="pref_title_notification_access_control">システム通知アクセス画面を開く</string>
-    <string name="pref_summary_notification_access_control">A2PNSサービスを有効・無効にすることができます</string>
 
     <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">アプリを選択</string>

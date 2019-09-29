@@ -17,6 +17,14 @@
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize" />
 
+    <Button
+            android:id="@+id/notificationAccessControlButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="notificationAccessControlAction"
+            android:text="@string/button_notification_access_control" />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notificationRecyclerView"
             android:layout_width="match_parent"

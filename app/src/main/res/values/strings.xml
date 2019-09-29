@@ -23,6 +23,7 @@
     <string name="toast_startup_device_not_paired">Devices have not been paired yet.\n\nPlease go back to Pair Devices page.</string>
 
     <!-- Main Activity -->
+    <string name="button_notification_access_control">Notification access control</string>
     <string name="button_clear_history_text">Clear History</string>
 
     <!-- settings Activity -->
@@ -35,9 +36,6 @@
     <string name="pref_category_title_custom">Custom</string>
     <string name="pref_title_set_custom_auth_token_url">Set custom authentication token server URL</string>
     <string name="pref_title_set_custom_auth_token_secret">Set custom token decryption secret</string>
-    <string name="pref_category_title_advanced">Advanced</string>
-    <string name="pref_title_notification_access_control">Open notification access control screen</string>
-    <string name="pref_summary_notification_access_control">You can enable / disable A2PNS service here</string>
 
     <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">Select Apps</string>

@@ -27,11 +27,5 @@
                 android:singleLine="true"
                 android:title="@string/pref_title_set_custom_auth_token_secret" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="@string/pref_category_title_advanced">
-        <Preference
-                android:key="@string/pref_ns_key_notification_access_control"
-                android:summary="@string/pref_summary_notification_access_control"
-                android:title="@string/pref_title_notification_access_control" />
-    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

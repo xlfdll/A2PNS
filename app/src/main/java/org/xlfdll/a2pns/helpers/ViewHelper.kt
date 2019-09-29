@@ -58,7 +58,7 @@ internal object ViewHelper {
         }
     }
 
-    fun getStatusIconNotification(context: Context): Notification {
+    fun createStatusIconNotification(context: Context): Notification {
         AppHelper.createAPNSNotificationChannel(context)
 
         val notificationIntent = Intent(context, MainActivity::class.java)

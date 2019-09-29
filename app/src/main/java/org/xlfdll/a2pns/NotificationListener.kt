@@ -23,7 +23,7 @@ class NotificationListener : NotificationListenerService() {
 
         startForeground(
             AppHelper.NOTIFICATION_SERVICE_RUNNING_ID,
-            ViewHelper.getStatusIconNotification(this)
+            ViewHelper.createStatusIconNotification(this)
         )
     }
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.AuthHelper
 
 class SettingsActivity : AppCompatActivity() {
@@ -81,12 +80,6 @@ class SettingsActivity : AppCompatActivity() {
             findPreference<Preference>(getString(R.string.pref_ns_key_select_apps))?.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     startActivity(Intent(requireContext(), AppListActivity::class.java))
-
-                    true
-                }
-            findPreference<Preference>(getString(R.string.pref_ns_key_notification_access_control))?.onPreferenceClickListener =
-                Preference.OnPreferenceClickListener {
-                    AppHelper.openNotificationListenerSettings(context!!)
 
                     true
                 }

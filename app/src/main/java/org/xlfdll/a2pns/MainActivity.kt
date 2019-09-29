@@ -48,6 +48,10 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    fun notificationAccessControlAction(view: View) {
+        AppHelper.openNotificationListenerSettings(this)
+    }
+
     fun clearHistoryAction(view: View) {
         ViewHelper.clearNotificationItems()
     }

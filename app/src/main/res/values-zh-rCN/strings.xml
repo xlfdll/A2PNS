@@ -24,6 +24,7 @@
     <string name="toast_startup_device_not_paired">设备未配对。\n\n请回到“配对设备”页面。</string>
 
     <!-- Main Activity -->
+    <string name="button_notification_access_control">通知访问控制</string>
     <string name="button_clear_history_text">清除通知历史</string>
 
     <!-- settings Activity -->
@@ -35,9 +36,6 @@
     <string name="pref_category_title_custom">自定义</string>
     <string name="pref_title_set_custom_auth_token_url">设定自定义验证令牌服务器URL地址</string>
     <string name="pref_title_set_custom_auth_token_secret">设定自定义令牌解密密钥</string>
-    <string name="pref_category_title_advanced">高级</string>
-    <string name="pref_title_notification_access_control">打开系统通知访问控制页面</string>
-    <string name="pref_summary_notification_access_control">您可以在此启用/禁用A2PNS服务</string>
 
     <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">选择应用</string>
