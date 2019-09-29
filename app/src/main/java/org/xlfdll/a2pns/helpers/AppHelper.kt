@@ -7,12 +7,8 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.preference.PreferenceManager
 import androidx.core.app.NotificationManagerCompat
-import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import org.json.JSONObject
 import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.models.ExternalData
 import org.xlfdll.android.network.OkHttpStack
@@ -53,7 +49,7 @@ internal object AppHelper {
                 Settings.edit()
                     .putStringSet(
                         context.getString(R.string.pref_key_selected_apps),
-                        HashSet<String>()
+                        hashSetOf("org.xlfdll.a2pns")
                     )
                     .commit()
             }

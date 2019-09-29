@@ -10,12 +10,15 @@ import org.json.JSONObject
 import org.xlfdll.a2pns.helpers.AppHelper
 import org.xlfdll.a2pns.helpers.CryptoHelper
 import org.xlfdll.a2pns.helpers.DataHelper
+import org.xlfdll.a2pns.helpers.ViewHelper
 import org.xlfdll.a2pns.models.ExternalData
 import org.xlfdll.a2pns.models.NotificationItem
 import org.xlfdll.android.network.JsonObjectRequestWithCustomHeaders
 
 class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
+        super.onNotificationPosted(sbn)
+
         if (AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)) {
             val item = generateNotificationItem(sbn)
 
@@ -29,12 +32,9 @@ class NotificationListener : NotificationListenerService() {
                 }
 
                 DataHelper.logNotificationItem(this, item)
-
-                broadcastNotificationItem(item)
+                ViewHelper.NotificationItemList.add(0, item)
             }
         }
-
-        super.onNotificationPosted(sbn)
     }
 
     private fun generateNotificationItem(sbn: StatusBarNotification?): NotificationItem {
@@ -72,14 +72,6 @@ class NotificationListener : NotificationListenerService() {
                 AppHelper.HttpRequestQueue.add(request)
             }
         }
-    }
-
-    private fun broadcastNotificationItem(item: NotificationItem) {
-        val intent = Intent("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
-
-        intent.putExtra("notification_item", item)
-
-        sendBroadcast(intent)
     }
 
     private fun generateAppleJSONObject(item: NotificationItem): JSONObject {

@@ -1,11 +1,15 @@
 package org.xlfdll.a2pns
 
 import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import org.json.JSONException
@@ -69,8 +73,11 @@ class QRCodeActivity : AppCompatActivity() {
 
                 if (token != null) {
                     saveDeviceToken(token)
-
                     showPairSuccessToast()
+
+                    if (AppHelper.isNotificationListenerEnabled(this)) {
+                        createPairSuccessNotification()
+                    }
 
                     finish()
                 } else {
@@ -117,5 +124,19 @@ class QRCodeActivity : AppCompatActivity() {
             this, getString(R.string.toast_device_token_camera_init_error) + it.message,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun createPairSuccessNotification() {
+        AppHelper.createAPNSNotificationChannel(this)
+
+        val notification = NotificationCompat.Builder(this, AppHelper.NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(getString(R.string.app_title))
+            .setContentText(getString(R.string.toast_device_token_pair_success_message))
+            .build()
+
+        val notifier = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        notifier.notify(AppHelper.NOTIFICATION_ID, notification)
     }
 }

@@ -17,8 +17,6 @@ import org.xlfdll.a2pns.helpers.ViewHelper
 import org.xlfdll.a2pns.models.NotificationItem
 
 class MainActivity : AppCompatActivity() {
-    private val receiver = NotificationServiceReceiver()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,18 +46,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val filter = IntentFilter("org.xlfdll.a2pns.NOTIFICATION_SERVICE")
-
-        registerReceiver(receiver, filter)
-
         enableSwitch.isChecked =
             AppHelper.Settings.getBoolean(getString(R.string.pref_key_enable_service), false)
-    }
 
-    override fun onPause() {
-        super.onPause()
-
-        unregisterReceiver(receiver)
+        notificationRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,18 +91,6 @@ class MainActivity : AppCompatActivity() {
             ViewHelper.showNotificationIcon(this)
         } else {
             ViewHelper.hideNotificationIcon(this)
-        }
-    }
-
-    inner class NotificationServiceReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val item = intent?.getParcelableExtra<NotificationItem>("notification_item")
-
-            if (item != null) {
-                ViewHelper.NotificationItemList.add(0, item)
-
-                notificationRecyclerView.adapter?.notifyDataSetChanged()
-            }
         }
     }
 }
