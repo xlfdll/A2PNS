@@ -1,15 +1,13 @@
 package org.xlfdll.a2pns.fragments
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import org.xlfdll.a2pns.R
+import org.xlfdll.a2pns.helpers.AppHelper
 
 class StartupListenerPermissionFragment : Fragment() {
     override fun onCreateView(
@@ -28,10 +26,6 @@ class StartupListenerPermissionFragment : Fragment() {
     }
 
     private fun openNotificationListenerSettings() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-        } else {
-            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-        }
+        AppHelper.openNotificationListenerSettings(context!!)
     }
 }

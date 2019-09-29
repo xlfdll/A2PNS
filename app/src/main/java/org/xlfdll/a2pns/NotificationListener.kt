@@ -36,11 +36,7 @@ class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
 
-        if (sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID && AppHelper.settings.getBoolean(
-                getString(R.string.pref_key_enable_service),
-                false
-            )
-        ) {
+        if (sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID) {
             val item = generateNotificationItem(sbn)
 
             if (AppHelper.settings.getStringSet(
@@ -163,10 +159,8 @@ class NotificationListener : NotificationListenerService() {
                 AppHelper.apnsServerURL + "/3/device/${deviceToken}",
                 headers,
                 jsonObject,
-                Response.Listener { response ->
-                },
-                Response.ErrorListener { error ->
-                })
+                Response.Listener { },
+                Response.ErrorListener { })
         }
 
         return null

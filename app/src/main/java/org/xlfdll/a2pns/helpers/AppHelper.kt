@@ -3,9 +3,11 @@ package org.xlfdll.a2pns.helpers
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.preference.PreferenceManager
+import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
@@ -91,9 +93,18 @@ internal object AppHelper {
     }
 
     fun isDevicePaired(context: Context): Boolean {
-        return AppHelper.settings.getString(
+        return settings.getString(
             context.getString(R.string.pref_key_device_token),
             null
         ) != null
     }
+
+    fun openNotificationListenerSettings(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        } else {
+            context.startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+        }
+    }
+
 }

@@ -28,17 +28,4 @@
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-    <Button
-            android:id="@+id/enableServiceButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:text="@string/switch_enable_text"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contentTextView" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

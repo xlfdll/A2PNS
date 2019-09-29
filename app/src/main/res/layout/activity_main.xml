@@ -17,19 +17,12 @@
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize" />
 
-    <Switch
-            android:id="@+id/enableSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:layout_marginBottom="15sp"
-            android:text="@string/switch_enable_text" />
-
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notificationRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
 
     <Button
             android:id="@+id/clearHistoryButton"

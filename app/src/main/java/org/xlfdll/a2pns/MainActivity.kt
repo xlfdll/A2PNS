@@ -25,26 +25,13 @@ class MainActivity : AppCompatActivity() {
 
         initNotificationList()
 
-        enableSwitch.setOnCheckedChangeListener { _, isChecked ->
-            handleEnableSwitchStateChange(isChecked)
-        }
-
         if (!AppHelper.settings.getBoolean(
-                getString(R.string.pref_ns_key_is_first_run_done),
+                getString(R.string.pref_key_is_first_run_done),
                 false
             )
         ) {
             startActivity(Intent(this, StartupActivity::class.java))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        enableSwitch.isChecked =
-            AppHelper.settings.getBoolean(getString(R.string.pref_key_enable_service), false)
-
-        notificationRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,18 +58,6 @@ class MainActivity : AppCompatActivity() {
 
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = ViewHelper.notificationListAdapter
-        }
-    }
-
-    private fun handleEnableSwitchStateChange(isChecked: Boolean) {
-        AppHelper.settings.edit()
-            .putBoolean(getString(R.string.pref_key_enable_service), isChecked)
-            .commit()
-
-        if (isChecked) {
-            startService(Intent(this, NotificationListener::class.java))
-        } else {
-            stopService(Intent(this, NotificationListener::class.java))
         }
     }
 }

@@ -85,7 +85,7 @@ class StartupActivity : AppCompatActivity() {
 
         if (isNotificationListenerEnabled && isDevicePaired) {
             AppHelper.settings.edit()
-                .putBoolean(getString(R.string.pref_ns_key_is_first_run_done), true)
+                .putBoolean(getString(R.string.pref_key_is_first_run_done), true)
                 .commit()
 
             finish()

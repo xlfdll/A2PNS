@@ -19,12 +19,11 @@
     <string name="fragment_startup_app_list_title">監視されるアプリを選択</string>
     <string name="fragment_startup_app_list_text">もちろん、全部の通知を収集することが要りません。多～すぎる！\n\n逆に、以下のボタンをタップし、通知が監視したいアプリを選択しましょう！</string>
     <string name="fragment_startup_finish_title">完成！</string>
-    <string name="fragment_startup_finish_text">初回セットアップは完成！\n\n次：サービスを有効にします。これだけ、以上です！</string>
+    <string name="fragment_startup_finish_text">初回セットアップは完成！\n\n次：「完成」ボタンをタップして。これだけ、以上です！</string>
     <string name="toast_startup_notification_listener_permission_not_granted">通知監視権限がまだ許可されていません。\n\n「通知監視権限を許可」ページに戻ってください。</string>
     <string name="toast_startup_device_not_paired">デバイスがまだペアリングされていません。\n\n「デバイスをペアリング」ページに戻ってください。</string>
 
     <!-- Main Activity -->
-    <string name="switch_enable_text">サービス有効</string>
     <string name="button_clear_history_text">通知歴史をクリア</string>
 
     <!-- settings Activity -->
@@ -37,6 +36,9 @@
     <string name="pref_category_title_custom">カスタム</string>
     <string name="pref_title_set_custom_auth_token_url">カスタム認証トークンサーバURLを設定</string>
     <string name="pref_title_set_custom_auth_token_secret">カスタム認証トークン復号鍵を設定</string>
+    <string name="pref_category_title_advanced">高度な設定</string>
+    <string name="pref_title_notification_access_control">システム通知アクセス画面を開く</string>
+    <string name="pref_summary_notification_access_control">A2PNSサービスを有効・無効にすることができます</string>
 
     <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">アプリを選択</string>
