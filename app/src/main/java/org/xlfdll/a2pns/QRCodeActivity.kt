@@ -78,12 +78,7 @@ class QRCodeActivity : AppCompatActivity() {
                 }
             }
         }
-        codeScanner.errorCallback = ErrorCallback {
-            // or ErrorCallback.SUPPRESS
-            runOnUiThread {
-                showCameraErrorToast(it)
-            }
-        }
+        codeScanner.errorCallback = ErrorCallback.SUPPRESS
 
         return codeScanner
     }
