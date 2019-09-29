@@ -3,10 +3,18 @@
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android通知転送サービス</string>
 
+    <!-- Common Alert Buttons -->
+    <string name="alert_button_ok">OK</string>
+    <string name="alert_button_yes">はい</string>
+    <string name="alert_button_no">いいえ</string>
+    <string name="alert_button_cancel">キャンセル</string>
+
     <!-- Notification Icon -->
     <string name="notification_channel_name">Android通知転送サービス</string>otherwise
     <string name="notification_channel_description">Android通知転送サービス</string>
     <string name="notification_running_text">サービス実行中</string>
+    <string name="notification_unknown_title">Androidデバイスからの通知</string>
+    <string name="notification_unknown_text">Androidデバイスでこの通知をご覧ください</string>
 
     <!-- Startup Activity -->
     <string name="button_startup_back">&lt; 戻る</string>
@@ -27,7 +35,7 @@
     <string name="button_notification_access_control">通知アクセスコントロール</string>
     <string name="button_clear_history_text">通知歴史をクリア</string>
 
-    <!-- settings Activity -->
+    <!-- Settings Activity -->
     <string name="title_activity_settings">設定</string>
     <string name="action_settings">設定</string>
     <string name="pref_category_title_general">全般</string>
@@ -48,12 +56,6 @@
     <string name="instruction_device_token_pair">カメラでターゲットデバイスの画面に表示されるA2PNSのQRコードをスキャンし、ペアリングを行う</string>
     <string name="toast_device_token_pair_success_message">デバイスペアリング成功</string>
     <string name="toast_device_token_camera_init_error">カメラ初期化エラー：</string>
-
-    <!-- Common Buttons -->
-    <string name="alert_button_ok">OK</string>
-    <string name="alert_button_yes">はい</string>
-    <string name="alert_button_no">いいえ</string>
-    <string name="alert_button_cancel">キャンセル</string>
 
     <!-- APS Authentication Token Sync -->
     <string name="toast_token_updated_message">通知サービスの認証トークンを更新しました</string>

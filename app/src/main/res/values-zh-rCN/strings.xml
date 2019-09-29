@@ -3,10 +3,18 @@
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android多机推送通知服务</string>
 
+    <!-- Common Alert Buttons -->
+    <string name="alert_button_ok">OK</string>
+    <string name="alert_button_yes">是</string>
+    <string name="alert_button_no">否</string>
+    <string name="alert_button_cancel">取消</string>
+
     <!-- Notification Icon -->
     <string name="notification_channel_name">Android多机推送通知服务</string>
     <string name="notification_channel_description">Android多机推送通知服务</string>
     <string name="notification_running_text">服务正在运行</string>
+    <string name="notification_unknown_title">从Android设备转送的通知</string>
+    <string name="notification_unknown_text">请在您的Android设备上查看这个通知</string>
 
     <!-- Startup Activity -->
     <string name="button_startup_back">&lt; 上一步</string>
@@ -27,7 +35,7 @@
     <string name="button_notification_access_control">通知访问控制</string>
     <string name="button_clear_history_text">清除通知历史</string>
 
-    <!-- settings Activity -->
+    <!-- Settings Activity -->
     <string name="title_activity_settings">设置</string>
     <string name="pref_category_title_general">一般</string>
     <string name="pref_title_pair_device">用二维码配对设备</string>
@@ -48,12 +56,6 @@
     <string name="instruction_device_token_pair">用相机对准要配对设备屏幕上显示的对应A2PNS二维码以完成配对过程</string>
     <string name="toast_device_token_pair_success_message">设备配对成功</string>
     <string name="toast_device_token_camera_init_error">相机初始化错误：</string>
-
-    <!-- Common Buttons -->
-    <string name="alert_button_ok">OK</string>
-    <string name="alert_button_yes">是</string>
-    <string name="alert_button_no">否</string>
-    <string name="alert_button_cancel">取消</string>
 
     <!-- APS Authentication Token Sync -->
     <string name="toast_token_updated_message">推送通知服务验证令牌已成功更新</string>

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.text.SpannableString
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -88,12 +89,13 @@ class NotificationListener : NotificationListenerService() {
             ).toString()
         }
 
-        // SpannableString cannot be casted to String directly. Use toString() to convert
+        val notificationTitle = getStringFromNotificationExtras(sbn, "android.title")
+            ?: getString(R.string.notification_unknown_title)
+        val notificationText = getStringFromNotificationExtras(sbn, "android.text")
+            ?: getString(R.string.notification_unknown_text)
+
         return NotificationItem(
-            sbn?.notification?.extras?.get("android.title")?.toString() ?: "",
-            sbn?.notification?.extras?.get("android.text")?.toString() ?: "",
-            source ?: "<Unknown>",
-            sbn?.packageName ?: ""
+            notificationTitle, notificationText, source ?: "<Unknown>", sbn?.packageName ?: ""
         )
     }
 
@@ -114,6 +116,18 @@ class NotificationListener : NotificationListenerService() {
                 AppHelper.httpRequestQueue.add(request)
             }
         }
+    }
+
+    private fun getStringFromNotificationExtras(sbn: StatusBarNotification?, key: String): String? {
+        if (sbn != null && sbn.notification?.extras?.containsKey(key) == true) {
+            val data = sbn.notification?.extras?.get(key)
+
+            if (data is String || data is SpannableString) {
+                return data.toString()
+            }
+        }
+
+        return null
     }
 
     private fun generateAppleJSONObject(item: NotificationItem): JSONObject {
