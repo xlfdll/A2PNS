@@ -28,12 +28,15 @@ internal object AppHelper {
     lateinit var httpRequestQueue: RequestQueue
     lateinit var mainActivity: MainActivity
 
+    var isInitialized = false
+
     fun init(context: Context) {
         initAPNSServerURL()
         initAppSettings(context)
         initHttpStack(context)
 
         mainActivity = context as MainActivity
+        isInitialized = true
     }
 
     private fun initAPNSServerURL() {

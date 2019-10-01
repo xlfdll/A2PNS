@@ -38,7 +38,7 @@ class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
 
-        if (sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID) {
+        if (AppHelper.isInitialized && sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID) {
             val item = generateNotificationItem(sbn)
 
             if (AppHelper.settings.getStringSet(
