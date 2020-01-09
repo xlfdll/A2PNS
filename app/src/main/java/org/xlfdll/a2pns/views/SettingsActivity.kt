@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -38,15 +39,24 @@ class SettingsActivity : DaggerAppCompatActivity() {
             .beginTransaction()
             .replace(
                 R.id.settings,
-                SettingsFragment(serviceViewModel)
+                SettingsFragment()
             )
             .commit()
     }
 
     // Preference fragment class must be a normal class instead of inner one
-    class SettingsFragment(private val serviceViewModel: ServiceViewModel) :
-        PreferenceFragmentCompat(),
+    class SettingsFragment : PreferenceFragmentCompat(),
         SharedPreferences.OnSharedPreferenceChangeListener {
+        @Inject
+        lateinit var serviceViewModel: ServiceViewModel
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            // Use AndroidSupportInjection here, as AndroidInjection uses old (v4) Fragment class
+            AndroidSupportInjection.inject(this)
+
+            super.onCreate(savedInstanceState)
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
