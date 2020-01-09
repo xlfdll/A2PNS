@@ -1,6 +1,8 @@
 package org.xlfdll.a2pns.views
 
-import android.content.*
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,10 +13,10 @@ import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.xlfdll.a2pns.App
 import org.xlfdll.a2pns.NotificationListener
+import org.xlfdll.a2pns.NotificationReceiver
 import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.base.ViewModelFactory
 import org.xlfdll.a2pns.helpers.ViewHelper
-import org.xlfdll.a2pns.models.NotificationItem
 import org.xlfdll.a2pns.viewmodels.NotificationListViewModel
 import org.xlfdll.a2pns.views.controllers.NotificationListController
 import javax.inject.Inject
@@ -28,7 +30,7 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var notificationListViewModel: NotificationListViewModel
-    private val notificationReceiver = NotificationReceiver()
+    private lateinit var notificationReceiver: NotificationReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,7 @@ class MainActivity : DaggerAppCompatActivity() {
         // Basically, ViewModels should not be injected directly
         notificationListViewModel =
             ViewModelProviders.of(this, viewModelFactory)[NotificationListViewModel::class.java]
+        notificationReceiver = NotificationReceiver(notificationListViewModel)
 
         if (!sharedPreferences.getBoolean(getString(R.string.pref_key_is_first_run_done), false)) {
             startActivity(Intent(this, StartupActivity::class.java))
@@ -89,15 +92,5 @@ class MainActivity : DaggerAppCompatActivity() {
 
     fun clearHistoryAction(view: View) {
         notificationListViewModel.clearNotifications()
-    }
-
-    inner class NotificationReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val item = intent?.getParcelableExtra<NotificationItem>("notification_item")
-
-            if (item != null) {
-                notificationListViewModel.addNotification(item)
-            }
-        }
     }
 }
