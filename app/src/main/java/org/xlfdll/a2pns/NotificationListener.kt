@@ -1,31 +1,63 @@
 package org.xlfdll.a2pns
 
 import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.text.SpannableString
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import org.xlfdll.a2pns.helpers.AppHelper
-import org.xlfdll.a2pns.helpers.CryptoHelper
-import org.xlfdll.a2pns.helpers.DataHelper
+import androidx.core.app.NotificationManagerCompat
+import dagger.android.AndroidInjection
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import org.xlfdll.a2pns.App.Companion.NOTIFICATION_SERVICE_RUNNING_ID
+import org.xlfdll.a2pns.extensions.NotificationItemExtensions.log
 import org.xlfdll.a2pns.helpers.ViewHelper
-import org.xlfdll.a2pns.models.ExternalData
 import org.xlfdll.a2pns.models.NotificationItem
-import org.xlfdll.android.network.JsonObjectRequestWithCustomHeaders
+import org.xlfdll.a2pns.viewmodels.ServiceViewModel
+import retrofit2.HttpException
+import javax.inject.Inject
 
 class NotificationListener : NotificationListenerService() {
+    companion object {
+        fun isEnabled(context: Context): Boolean {
+            return NotificationManagerCompat.getEnabledListenerPackages(context)
+                .contains(context.packageName)
+        }
+
+        fun reconnect(context: Context) {
+            val packageManager: PackageManager = context.packageManager
+
+            packageManager.setComponentEnabledSetting(
+                ComponentName(context, NotificationListener::class.java),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+            )
+            packageManager.setComponentEnabledSetting(
+                ComponentName(context, NotificationListener::class.java),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+            )
+        }
+    }
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+    @Inject
+    lateinit var serviceViewModel: ServiceViewModel
+
+    override fun onCreate() {
+        AndroidInjection.inject(this)
+
+        super.onCreate()
+    }
+
     override fun onListenerConnected() {
         super.onListenerConnected()
 
         startForeground(
-            AppHelper.NOTIFICATION_SERVICE_RUNNING_ID,
-            ViewHelper.createStatusIconNotification(this)
+            NOTIFICATION_SERVICE_RUNNING_ID,
+            ViewHelper.showStatusIconNotification(this)
         )
     }
 
@@ -38,150 +70,51 @@ class NotificationListener : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
 
-        if (AppHelper.isInitialized && sbn?.id != AppHelper.NOTIFICATION_SERVICE_RUNNING_ID) {
-            val item = generateNotificationItem(sbn)
+        if (sbn?.id != NOTIFICATION_SERVICE_RUNNING_ID) {
+            val item = NotificationItem.create(this, sbn)
 
-            if (AppHelper.settings.getStringSet(
+            if (sharedPreferences.getStringSet(
                     getString(R.string.pref_key_selected_apps),
-                    null
-                )?.contains(item.packageName) == true
+                    setOf<String>()
+                )!!.contains(item.packageName)
             ) {
                 if (!ExternalData.MockMode) {
-                    sendNotificationItem(item)
+                    sendNotificationRequest(item, this)
                 }
 
-                DataHelper.logNotificationItem(this, item)
-                ViewHelper.addNotificationItem(item)
+                item.log(this)
+
+                broadcastNotificationItem(item)
             }
         }
     }
 
-    private fun tryReconnectService() {
-        toggleNotificationListenerService()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val componentName = ComponentName(applicationContext, NotificationListener::class.java)
-
-            requestRebind(componentName)
-        }
-    }
-
-    private fun toggleNotificationListenerService() {
-        packageManager.setComponentEnabledSetting(
-            ComponentName(
-                this,
-                NotificationListener::class.java
-            ), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
-        )
-        packageManager.setComponentEnabledSetting(
-            ComponentName(
-                this,
-                NotificationListener::class.java
-            ), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
-        )
-    }
-
-    private fun generateNotificationItem(sbn: StatusBarNotification?): NotificationItem {
-        var source = sbn?.packageName
-
-        if (source != null) {
-            source = packageManager.getPackageInfo(source, 0).applicationInfo.loadLabel(
-                packageManager
-            ).toString()
-        }
-
-        val notificationTitle = getStringFromNotificationExtras(sbn, "android.title")
-            ?: getString(R.string.notification_unknown_title)
-        val notificationText = getStringFromNotificationExtras(sbn, "android.text")
-            ?: getString(R.string.notification_unknown_text)
-
-        return NotificationItem(
-            notificationTitle, notificationText, source ?: "<Unknown>", sbn?.packageName ?: ""
-        )
-    }
-
-    private fun sendNotificationItem(item: NotificationItem) {
-        val authToken =
-            AppHelper.settings.getString(getString(R.string.pref_key_auth_token), null)
-
-        if (authToken != null) {
-            val deviceToken = AppHelper.settings.getString(
-                getString(R.string.pref_key_device_token),
-                ""
-            )
-            val request = generateAppleJSONObjectRequest(
-                item, authToken, deviceToken!!
-            )
-
-            if (request != null) {
-                AppHelper.httpRequestQueue.add(request)
+    private fun sendNotificationRequest(item: NotificationItem, context: Context) {
+        MainScope().launch {
+            if (!serviceViewModel.hasIncorrectClock) {
+                try {
+                    serviceViewModel.sendNotificationRequest(item)
+                } catch (ex: IllegalStateException) {
+                    ViewHelper.showIncorrectClockErrorNotification(context)
+                } catch (ex: HttpException) {
+                    Log.i(
+                        context.getString(R.string.app_name),
+                        "Error sending notification from ${item.source} (${item.packageName}) - (${ex.code()}) ${ex.message()}"
+                    )
+                } catch (ex: Throwable) {
+                    if (ExternalData.DebugMode) {
+                        throw ex
+                    }
+                }
             }
         }
     }
 
-    private fun getStringFromNotificationExtras(sbn: StatusBarNotification?, key: String): String? {
-        if (sbn != null && sbn.notification?.extras?.containsKey(key) == true) {
-            val data = sbn.notification?.extras?.get(key)
+    private fun broadcastNotificationItem(item: NotificationItem) {
+        val intent = Intent(App.NOTIFICATION_SERVICE_ACTION)
 
-            if (data is String || data is SpannableString) {
-                return data.toString()
-            }
-        }
+        intent.putExtra("notification_item", item)
 
-        return null
-    }
-
-    private fun generateAppleJSONObject(item: NotificationItem): JSONObject {
-        val rootJsonObject = JSONObject()
-
-        rootJsonObject.put("aps", JSONObject())
-
-        val apnsJsonObject = rootJsonObject.getJSONObject("aps")
-
-        apnsJsonObject.put("alert", JSONObject())
-
-        val alertJsonObject = apnsJsonObject.getJSONObject("alert")
-
-        alertJsonObject.put("title", item.title)
-        alertJsonObject.put("subtitle", item.source)
-        alertJsonObject.put("body", item.text)
-
-        apnsJsonObject.put("content-available", 1)
-        apnsJsonObject.put("mutable-content", 1)
-        apnsJsonObject.put("sound", "default")
-
-        rootJsonObject.put("package", item.packageName)
-
-        return rootJsonObject
-    }
-
-    private fun generateAppleJSONObjectRequest(
-        item: NotificationItem,
-        authToken: String,
-        deviceToken: String
-    ): JsonObjectRequest? {
-        val authTokenPackage = JSONObject(authToken)
-        val jwt = CryptoHelper.getAPNSBearerToken(authTokenPackage)
-        val headers = HashMap<String, String>()
-
-        headers["Authorization"] = "bearer $jwt"
-        headers["apns-push-type"] = "alert"
-        headers["apns-topic"] = authTokenPackage.getString("id")
-
-        if (jwt != null) {
-            val jsonObject = generateAppleJSONObject(item)
-            return JsonObjectRequestWithCustomHeaders(Request.Method.POST,
-                AppHelper.apnsServerURL + "/3/device/${deviceToken}",
-                headers,
-                jsonObject,
-                Response.Listener { response ->
-                    Log.i(getString(R.string.app_name), response.toString())
-                },
-                Response.ErrorListener { error ->
-                    Log.e(getString(R.string.app_name), error.toString())
-                })
-        }
-
-        return null
+        sendBroadcast(intent)
     }
 }

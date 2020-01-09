@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="name"
+                type="java.lang.String" />
+
+        <variable
+                name="fullQualifiedName"
+                type="java.lang.String" />
+
+        <variable
+                name="icon"
+                type="android.graphics.drawable.Drawable" />
+
+        <variable
+                name="selected"
+                type="java.lang.Boolean" />
+
+        <variable
+                name="itemCheckedChangeListener"
+                type="android.widget.CompoundButton.OnCheckedChangeListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5sp">
+
+        <ImageView
+                android:id="@+id/appIconImageView"
+                android:layout_width="48sp"
+                android:layout_height="48sp"
+                android:layout_gravity="center"
+                android:contentDescription="@{name}"
+                android:src="@{icon}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/appNameTextView"
+                android:layout_width="305dp"
+                android:layout_height="wrap_content"
+                android:text="@{name}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/appSelectedCheckBox"
+                app:layout_constraintStart_toEndOf="@+id/appIconImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/appPackageNameTextView"
+                android:layout_width="305dp"
+                android:layout_height="wrap_content"
+                android:text="@{fullQualifiedName}"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/appSelectedCheckBox"
+                app:layout_constraintStart_toEndOf="@+id/appIconImageView"
+                app:layout_constraintTop_toBottomOf="@+id/appNameTextView" />
+
+        <CheckBox
+                android:id="@+id/appSelectedCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="@{selected}"
+                android:onCheckedChanged="@{itemCheckedChangeListener}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

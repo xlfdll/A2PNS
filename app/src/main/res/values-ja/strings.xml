@@ -42,9 +42,10 @@
     <string name="pref_title_pair_device">QRコードでデバイスをペアする</string>
     <string name="pref_title_sync_auth_token">通知サービスの認証トークンを同期</string>
     <string name="pref_title_select_apps">通知転送のアプリを選択</string>
+    <string name="pref_category_title_ui">インターフェース</string>
+    <string name="pref_title_cached_notification_count">表示用キャッシュした歴史通知数を設定</string>
     <string name="pref_category_title_custom">カスタム</string>
     <string name="pref_title_set_custom_auth_token_url">カスタム認証トークンサーバURLを設定</string>
-    <string name="pref_title_set_custom_auth_token_secret">カスタム認証トークン復号鍵を設定</string>
 
     <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">アプリを選択</string>
@@ -61,4 +62,5 @@
     <string name="toast_token_updated_message">通知サービスの認証トークンを更新しました</string>
     <string name="toast_token_no_need_to_update_message">通知サービスの認証トークンは最新です。\n更新がいりません。</string>
     <string name="alert_token_download_error_message">通知サービスの認証トークンは同期できません。\nインターネット接続をチェックし、もう一度やり直してください。</string>
+    <string name="alert_token_incorrect_clock_error_message">日付と時刻設定が正しくないため、通知サービスの認証トークンは同期できません。\nシステム日付と時刻を調整し、もう一度やり直してください。</string>
 </resources>

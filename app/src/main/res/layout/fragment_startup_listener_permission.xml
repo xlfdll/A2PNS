@@ -5,7 +5,7 @@
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".fragments.StartupListenerPermissionFragment">
+        tools:context=".views.fragments.StartupListenerPermissionFragment">
 
     <TextView
             android:id="@+id/titleTextView"

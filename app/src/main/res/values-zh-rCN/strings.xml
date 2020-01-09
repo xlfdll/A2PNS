@@ -41,9 +41,10 @@
     <string name="pref_title_pair_device">用二维码配对设备</string>
     <string name="pref_title_sync_auth_token">同步推送通知服务验证令牌</string>
     <string name="pref_title_select_apps">选择要转送通知的应用</string>
+    <string name="pref_category_title_ui">用户界面</string>
+    <string name="pref_title_cached_notification_count">设定用于显示的缓存历史通知数</string>
     <string name="pref_category_title_custom">自定义</string>
     <string name="pref_title_set_custom_auth_token_url">设定自定义验证令牌服务器URL地址</string>
-    <string name="pref_title_set_custom_auth_token_secret">设定自定义令牌解密密钥</string>
 
     <!-- App List Activity -->
     <string name="pref_title_action_bar_select_apps">选择应用</string>
@@ -61,4 +62,5 @@
     <string name="toast_token_updated_message">推送通知服务验证令牌已成功更新</string>
     <string name="toast_token_no_need_to_update_message">推送通知服务验证令牌已经为最新，无需更新。</string>
     <string name="alert_token_download_error_message">推送通知服务验证令牌无法同步。\n请检查互联网连接并重试。</string>
+    <string name="alert_token_incorrect_clock_error_message">由于不正确的日期与时间设置，推送通知服务验证令牌无法同步。\n请重新设置系统日期与时间，然后重试。</string>
 </resources>

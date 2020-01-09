@@ -22,14 +22,13 @@ To build Android app:
 package org.xlfdll.a2pns.models
 
 internal object ExternalData {
+    // true - Mock Debug Mode. Create payloads but do not send
+    // false - Production Mode. Will send payloads to push notification services (e.g. Apple's PNS)
+    const val MockMode = true
     // true - Debug Mode. Use development server as push notification service (e.g. Apple's PNS) destinations
     // false - Production Mode. Use production server as push notification service destinations
     const val DebugMode = true;
-    // true - Mock Debug Mode. Create payloads but do not send
-    // false - Production Mode. Will send payloads to push notification services (e.g. Apple's PNS)
-    const val MockDebugMode = true
     const val APNSAuthTokenURL = <Your Server URL: String>
-    const val DecryptionSecret = <Your Decryption Secret: String>
 }
 ```
 

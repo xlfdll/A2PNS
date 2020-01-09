@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+        tools:context=".views.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/actionToolbar"
@@ -25,7 +25,7 @@
             android:onClick="notificationAccessControlAction"
             android:text="@string/button_notification_access_control" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/notificationRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"

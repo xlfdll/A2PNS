@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="5sp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <data>
+        <!-- Get wrapped item -->
+        <variable
+                name="item"
+                type="org.xlfdll.a2pns.models.NotificationItem" />
+    </data>
+
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/notificationTitleTextView" android:textSize="18sp"
-            android:textStyle="bold"/>
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/notificationTextTextView" android:textSize="16sp"/>
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/notificationSourceTextView" android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"/>
-</LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5sp">
+
+        <TextView
+                android:id="@+id/notificationTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.title}"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        <TextView
+                android:id="@+id/notificationTextTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.text}"
+                android:textSize="16sp" />
+
+        <TextView
+                android:id="@+id/notificationSourceTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.source}"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp" />
+    </LinearLayout>
+</layout>

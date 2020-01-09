@@ -5,7 +5,7 @@
         android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".fragments.StartupFinishFragment">
+        tools:context=".views.fragments.StartupFinishFragment">
 
     <TextView
             android:id="@+id/titleTextView"
