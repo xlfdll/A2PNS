@@ -36,11 +36,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".NotificationReceiver">
-            <intent-filter>
-                <action android:name=".App.NOTIFICATION_SERVICE_ACTION" />
-            </intent-filter>
-        </receiver>
         <service
                 android:name=".NotificationListener"
                 android:icon="@drawable/ic_notification"
