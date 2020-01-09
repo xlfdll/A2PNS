@@ -28,7 +28,7 @@ internal object ExternalData {
     // true - Debug Mode. Use development server as push notification service (e.g. Apple's PNS) destinations
     // false - Production Mode. Use production server as push notification service destinations
     const val DebugMode = true;
-    const val APNSAuthTokenURL = <Your Server URL: String>
+    const val AuthTokenURL = <Your Server URL: String>
 }
 ```
 
