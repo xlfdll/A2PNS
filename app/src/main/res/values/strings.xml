@@ -33,6 +33,7 @@
     <!-- Main Activity -->
     <string name="button_notification_access_control">Notification access control</string>
     <string name="button_clear_history_text">Clear History</string>
+    <string name="view_no_pushed_notification_text">No notification being pushed yet</string>
 
     <!-- Settings Activity -->
     <string name="title_activity_settings">Settings</string>

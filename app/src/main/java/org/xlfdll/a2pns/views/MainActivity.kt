@@ -55,6 +55,13 @@ class MainActivity : DaggerAppCompatActivity() {
         // Using Room to persist all notifications (until app restarts)
         notificationListViewModel.notificationLiveView.observe(this, Observer { notifications ->
             notificationListController.setData(notifications)
+
+            notificationEmptyTextView.visibility =
+                if (notifications.isEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
         })
 
         registerReceiver(notificationReceiver, IntentFilter(App.NOTIFICATION_SERVICE_ACTION))

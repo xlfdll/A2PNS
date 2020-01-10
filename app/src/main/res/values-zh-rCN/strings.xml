@@ -34,6 +34,7 @@
     <!-- Main Activity -->
     <string name="button_notification_access_control">通知访问控制</string>
     <string name="button_clear_history_text">清除通知历史</string>
+    <string name="view_no_pushed_notification_text">还没有被转送的通知</string>
 
     <!-- Settings Activity -->
     <string name="title_activity_settings">设置</string>
