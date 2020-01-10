@@ -67,9 +67,20 @@ class SettingsActivity : DaggerAppCompatActivity() {
             sharedPreferences: SharedPreferences?,
             key: String?
         ) {
+            val cachedNotificationCountKey = getString(R.string.pref_key_cached_notification_count)
             val customAuthTokenURLKey = getString(R.string.pref_key_custom_auth_token_url)
 
             when (key) {
+                cachedNotificationCountKey -> {
+                    try {
+                        // Stupid EditTextPreference always save integers as strings
+                        sharedPreferences?.getString(key, null)?.toInt()
+                    } catch (ex: Throwable) {
+                        sharedPreferences?.edit()
+                            ?.putString(key, "50")
+                            ?.apply()
+                    }
+                }
                 customAuthTokenURLKey -> {
                     if (sharedPreferences?.getString(key, null) == "") {
                         sharedPreferences.edit()
