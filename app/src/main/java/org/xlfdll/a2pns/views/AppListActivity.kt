@@ -99,6 +99,7 @@ class AppListActivity : DaggerAppCompatActivity(), PackageItemCallback {
         menuItem.setOnActionExpandListener(SearchViewExpandListener())
 
         searchView.isIconifiedByDefault = false
+        searchView.queryHint = getString(R.string.hint_search)
         searchView.setOnQueryTextListener(SearchViewQueryListener())
     }
 

@@ -51,6 +51,7 @@
     <string name="action_search">Search</string>
     <string name="action_select_all">Select All</string>
     <string name="action_clear_all">Clear All</string>
+    <string name="hint_search">Enter keyword to search</string>
 
     <!-- QR Code Activity -->
     <string name="instruction_device_token_pair">Move camera to the A2PNS QR code shown in the target (destination) device to finish pairing</string>
