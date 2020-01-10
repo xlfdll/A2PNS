@@ -19,7 +19,7 @@ To build Android app:
 2. In package org.xlfdll.a2pns.models, create Kotlin code file named ''ExternalData.kt'' and add the following:
 
 ```
-package org.xlfdll.a2pns.models
+package org.xlfdll.a2pns
 
 internal object ExternalData {
     // true - Mock Debug Mode. Create payloads but do not send
