@@ -102,6 +102,16 @@ class NotificationListener : NotificationListenerService() {
                         "Error sending notification from ${item.source} (${item.packageName}) - (${ex.code()}) ${ex.message()}"
                     )
                 } catch (ex: Throwable) {
+                    Log.i(
+                        context.getString(R.string.app_name),
+                        "[ERROR] Unexpected error occurred: ${ex.message}"
+                                + System.getProperty("line.separator")
+                                + "Stacktrace:"
+                                + System.getProperty("line.separator")
+                    )
+
+                    ex.printStackTrace()
+
                     if (ExternalData.DebugMode) {
                         throw ex
                     }

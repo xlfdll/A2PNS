@@ -2,7 +2,9 @@ package org.xlfdll.a2pns.viewmodels
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.coroutineScope
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneOffset
 import org.xlfdll.a2pns.ExternalData
@@ -26,18 +28,28 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
     var hasIncorrectClock: Boolean = false
 
     fun checkAuthTokenExpiration(): Boolean {
-        val nowDateTime = LocalDateTime.now(ZoneOffset.UTC).atZone(ZoneOffset.UTC).toEpochSecond()
+        val nowTime = LocalDateTime.now(ZoneOffset.UTC).atZone(ZoneOffset.UTC).toEpochSecond()
         val tokenIssuedTime = sharedPreferences.getLong(
             context.getString(R.string.pref_key_auth_token_issued_time),
             -1
         )
 
+        Log.i(
+            context.getString(R.string.app_name),
+            "[INFO] Now epoch: $nowTime / Issued epoch: $tokenIssuedTime"
+        )
+
         if (tokenIssuedTime != -1L) {
-            val timeDifference = nowDateTime - tokenIssuedTime
+            val timeDifference = nowTime - tokenIssuedTime
 
             hasIncorrectClock = (timeDifference < 0)
 
             if (hasIncorrectClock) {
+                Log.i(
+                    context.getString(R.string.app_name),
+                    "[ERROR] Incorrect clock"
+                )
+
                 throw IllegalStateException("Current date and time is incorrect (much slower than normal).")
             }
 
@@ -48,34 +60,70 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
     }
 
     suspend fun updateAuthToken() {
-        val baseURL = sharedPreferences.getString(
-            context.getString(R.string.pref_key_custom_auth_token_url),
-            ExternalData.AuthDataURL
-        )
-        val authToken = authTokenService.getAPNSAuthToken(baseURL!!)
+        coroutineScope {
+            Log.i(
+                context.getString(R.string.app_name),
+                "[INFO] Auth token update started"
+            )
 
-        sharedPreferences.edit()
-            .putString(context.getString(R.string.pref_key_auth_token_id), authToken.id)
-            .putString(context.getString(R.string.pref_key_auth_token), "bearer ${authToken.jwt}")
-            .putLong(context.getString(R.string.pref_key_auth_token_issued_time), authToken.iat)
-            .apply()
+            val baseURL = sharedPreferences.getString(
+                context.getString(R.string.pref_key_custom_auth_token_url),
+                ExternalData.AuthDataURL
+            )
+            val authToken = authTokenService.getAPNSAuthToken(baseURL!!)
+
+            sharedPreferences.edit()
+                .putString(context.getString(R.string.pref_key_auth_token_id), authToken.id)
+                .putString(
+                    context.getString(R.string.pref_key_auth_token),
+                    "bearer ${authToken.jwt}"
+                )
+                .putLong(
+                    context.getString(R.string.pref_key_auth_token_issued_time),
+                    authToken.iat
+                )
+                .apply()
+
+            Log.i(
+                context.getString(R.string.app_name),
+                "[INFO] Auth token update finished"
+            )
+        }
     }
 
     suspend fun sendNotificationRequest(notificationItem: NotificationItem) {
-        if (checkAuthTokenExpiration()) {
-            updateAuthToken()
-        }
+        coroutineScope {
+            if (checkAuthTokenExpiration()) {
+                updateAuthToken()
+            }
 
-        if (!checkAuthTokenExpiration()) {
-            val deviceToken =
-                sharedPreferences.getString(context.getString(R.string.pref_key_device_token), "")
-            val authToken =
-                sharedPreferences.getString(context.getString(R.string.pref_key_auth_token), "")
-            val id =
-                sharedPreferences.getString(context.getString(R.string.pref_key_auth_token_id), "")
-            val request = APNSRequest(notificationItem)
+            if (!checkAuthTokenExpiration()) {
+                Log.i(
+                    context.getString(R.string.app_name),
+                    "[INFO] Started sending notification"
+                )
 
-            apnsService.sendNotificationRequest(deviceToken!!, authToken!!, id!!, request)
+                val deviceToken =
+                    sharedPreferences.getString(
+                        context.getString(R.string.pref_key_device_token),
+                        ""
+                    )
+                val authToken =
+                    sharedPreferences.getString(context.getString(R.string.pref_key_auth_token), "")
+                val id =
+                    sharedPreferences.getString(
+                        context.getString(R.string.pref_key_auth_token_id),
+                        ""
+                    )
+                val request = APNSRequest(notificationItem)
+
+                apnsService.sendNotificationRequest(deviceToken!!, authToken!!, id!!, request)
+
+                Log.i(
+                    context.getString(R.string.app_name),
+                    "[INFO] Finished sending notification"
+                )
+            }
         }
     }
 }
