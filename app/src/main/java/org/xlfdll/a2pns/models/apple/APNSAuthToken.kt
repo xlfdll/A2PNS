@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class APNSAuthToken(
     // Must add @SerializedName annotations for all variables used by Gson
     // In release builds, obfuscation will replace all variable names
-    // Thus, the serialized names become incorrect
+    // Thus, the default serialized names will not be correct
     @SerializedName("id")
     var id: String,
     @SerializedName("iat")

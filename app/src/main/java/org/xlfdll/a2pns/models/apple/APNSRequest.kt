@@ -14,13 +14,18 @@ class APNSRequest(notificationItem: NotificationItem) {
         val content_available = 1
         @SerializedName("mutable-content")
         val mutable_content = 1
+        @SerializedName("sound")
         val sound = "default"
+        @SerializedName("alert")
         val alert = APNSRequestAlert(notificationItem)
     }
 
     inner class APNSRequestAlert(notificationItem: NotificationItem) {
+        @SerializedName("title")
         val title = notificationItem.title
+        @SerializedName("subtitle")
         val subtitle = notificationItem.source
+        @SerializedName("body")
         val body = notificationItem.text
     }
 }
