@@ -37,6 +37,22 @@ data class NotificationItem(
         dest?.writeString(this.packageName)
     }
 
+    override fun equals(other: Any?): Boolean {
+        val otherItem = other as? NotificationItem
+
+        if (otherItem != null) {
+            return (this.title == otherItem.title
+                    && this.text == otherItem.text
+                    && this.packageName == otherItem.packageName)
+        }
+
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return this.title.hashCode() + this.text.hashCode() + this.packageName.hashCode()
+    }
+
     companion object CREATOR : Parcelable.Creator<NotificationItem> {
         override fun createFromParcel(parcel: Parcel): NotificationItem {
             return NotificationItem(parcel)

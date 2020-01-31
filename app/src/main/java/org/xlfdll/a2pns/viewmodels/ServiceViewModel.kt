@@ -13,6 +13,7 @@ import org.xlfdll.a2pns.models.NotificationItem
 import org.xlfdll.a2pns.models.apple.APNSRequest
 import org.xlfdll.a2pns.services.apple.APNSService
 import org.xlfdll.a2pns.services.apple.AuthTokenService
+import org.xlfdll.a2pns.services.db.NotificationCacheDao
 import javax.inject.Inject
 
 class ServiceViewModel @Inject constructor() : ViewModel() {
@@ -24,6 +25,8 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
     lateinit var authTokenService: AuthTokenService
     @Inject
     lateinit var apnsService: APNSService
+    @Inject
+    lateinit var notificationCacheDao: NotificationCacheDao
 
     var hasIncorrectClock: Boolean = false
 
@@ -91,38 +94,56 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    suspend fun checkDuplicatedNotificationItem(notificationItem: NotificationItem): Boolean {
+        val lastNotificationItem = notificationCacheDao.getLastNotification()
+
+        if (lastNotificationItem == notificationItem) {
+            Log.i(
+                context.getString(R.string.app_name),
+                "[INFO] Notification same as the last"
+            )
+        }
+
+        return lastNotificationItem == notificationItem
+    }
+
     suspend fun sendNotificationRequest(notificationItem: NotificationItem) {
         coroutineScope {
-            if (checkAuthTokenExpiration()) {
-                updateAuthToken()
-            }
+            if (!checkDuplicatedNotificationItem(notificationItem)) {
+                if (checkAuthTokenExpiration()) {
+                    updateAuthToken()
+                }
 
-            if (!checkAuthTokenExpiration()) {
-                Log.i(
-                    context.getString(R.string.app_name),
-                    "[INFO] Started sending notification"
-                )
-
-                val deviceToken =
-                    sharedPreferences.getString(
-                        context.getString(R.string.pref_key_device_token),
-                        ""
+                if (!checkAuthTokenExpiration()) {
+                    Log.i(
+                        context.getString(R.string.app_name),
+                        "[INFO] Started sending notification"
                     )
-                val authToken =
-                    sharedPreferences.getString(context.getString(R.string.pref_key_auth_token), "")
-                val id =
-                    sharedPreferences.getString(
-                        context.getString(R.string.pref_key_auth_token_id),
-                        ""
+
+                    val deviceToken =
+                        sharedPreferences.getString(
+                            context.getString(R.string.pref_key_device_token),
+                            ""
+                        )
+                    val authToken =
+                        sharedPreferences.getString(
+                            context.getString(R.string.pref_key_auth_token),
+                            ""
+                        )
+                    val id =
+                        sharedPreferences.getString(
+                            context.getString(R.string.pref_key_auth_token_id),
+                            ""
+                        )
+                    val request = APNSRequest(notificationItem)
+
+                    apnsService.sendNotificationRequest(deviceToken!!, authToken!!, id!!, request)
+
+                    Log.i(
+                        context.getString(R.string.app_name),
+                        "[INFO] Finished sending notification"
                     )
-                val request = APNSRequest(notificationItem)
-
-                apnsService.sendNotificationRequest(deviceToken!!, authToken!!, id!!, request)
-
-                Log.i(
-                    context.getString(R.string.app_name),
-                    "[INFO] Finished sending notification"
-                )
+                }
             }
         }
     }

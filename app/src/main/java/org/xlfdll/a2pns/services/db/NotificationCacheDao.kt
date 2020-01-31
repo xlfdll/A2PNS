@@ -8,6 +8,9 @@ interface NotificationCacheDao {
     @Query("SELECT * FROM Notifications")
     suspend fun getAllNotifications(): List<NotificationItem>
 
+    @Query("SELECT * FROM Notifications WHERE id = (SELECT MAX(id) FROM Notifications)")
+    suspend fun getLastNotification(): NotificationItem
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addNotifications(vararg notifications: NotificationItem)
 

@@ -45,6 +45,10 @@ class NotificationListViewModel @Inject constructor(
 
     fun addNotification(item: NotificationItem) {
         viewModelScope.launch {
+            if (notificationList.size > 0 && item == notificationList[0]) {
+                return@launch
+            }
+
             notificationList.add(0, item)
             notificationCacheDao.addNotifications(item)
 
