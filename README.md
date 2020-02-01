@@ -10,25 +10,26 @@ This is the repository of Android to Push Notification Service (Base App).
 ## Development
 Currently, the first version of A2PNS supports Android to iOS notification deliveries, and it is still under development.
 
-(This will be changed in the future. See Roadmap section below)
+(This might be changed in the future. See Roadmap section below)
 
 ### Build
 To build Android app:
 
 1. Open the project in Android Studio
-2. In package org.xlfdll.a2pns.models, create Kotlin code file named ''ExternalData.kt'' and add the following:
+2. In package org.xlfdll.a2pns, create a Kotlin code file named ''ExternalData.kt'' and add the following:
 
 ```
 package org.xlfdll.a2pns
 
 internal object ExternalData {
-    // true - Mock Debug Mode. Create payloads but do not send
+    // true - Mock Debug Mode. Create payloads but do not send (only log them)
     // false - Production Mode. Will send payloads to push notification services (e.g. Apple's PNS)
     const val MockMode = true
     // true - Debug Mode. Use development server as push notification service (e.g. Apple's PNS) destinations
     // false - Production Mode. Use production server as push notification service destinations
     const val DebugMode = true;
-    const val AuthTokenURL = <Your Server URL: String>
+    // Different notification service servers need to use different tokens for authentication
+    const val AuthDataURL = <Your Auth Token Server URL: String>
 }
 ```
 
