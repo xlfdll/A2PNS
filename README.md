@@ -27,7 +27,7 @@ internal object ExternalData {
     const val MockMode = true
     // true - Debug Mode. Use development server as push notification service (e.g. Apple's PNS) destinations
     // false - Production Mode. Use production server as push notification service destinations
-    const val DebugMode = true;
+    const val DebugMode = true
     // Different notification service servers need to use different tokens for authentication
     const val AuthDataURL = <Your Auth Token Server URL: String>
 }
