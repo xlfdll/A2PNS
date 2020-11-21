@@ -5,11 +5,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.airbnb.epoxy.EpoxyRecyclerView
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_app_list.*
 import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.base.ViewModelFactory
 import org.xlfdll.a2pns.models.PackageItem
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class AppListActivity : DaggerAppCompatActivity(), PackageItemCallback {
     @Inject
     lateinit var appListController: AppListController
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -34,10 +36,12 @@ class AppListActivity : DaggerAppCompatActivity(), PackageItemCallback {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val appListRecyclerView = findViewById<EpoxyRecyclerView>(R.id.appListRecyclerView)
+
         this.title = getString(R.string.pref_title_action_bar_select_apps)
 
-        appListViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[AppListViewModel::class.java]
+        appListViewModel = ViewModelProvider(this, viewModelFactory)[AppListViewModel::class.java]
 
         appListController.setPackageItemCallback(this)
         appListController.addModelBuildListener {

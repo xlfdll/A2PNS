@@ -7,10 +7,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.airbnb.epoxy.EpoxyRecyclerView
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import org.xlfdll.a2pns.App
 import org.xlfdll.a2pns.NotificationListener
 import org.xlfdll.a2pns.NotificationReceiver
@@ -24,8 +25,10 @@ import javax.inject.Inject
 class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
     @Inject
     lateinit var notificationListController: NotificationListController
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -40,9 +43,13 @@ class MainActivity : DaggerAppCompatActivity() {
         // Has to set title here, as manifest's label attributes do not work consistently
         this.title = getString(R.string.app_title)
 
+        val notificationRecyclerView =
+            findViewById<EpoxyRecyclerView>(R.id.notificationRecyclerView)
+        val notificationEmptyTextView = findViewById<TextView>(R.id.notificationEmptyTextView)
+
         // Basically, ViewModels should not be injected directly
         notificationListViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[NotificationListViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[NotificationListViewModel::class.java]
         notificationReceiver = NotificationReceiver(notificationListViewModel)
 
         if (!sharedPreferences.getBoolean(getString(R.string.pref_key_is_first_run_done), false)) {

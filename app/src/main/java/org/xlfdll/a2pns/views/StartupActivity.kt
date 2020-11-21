@@ -3,13 +3,13 @@ package org.xlfdll.a2pns.views
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_startup.*
 import org.xlfdll.a2pns.NotificationListener
 import org.xlfdll.a2pns.R
 import org.xlfdll.a2pns.views.fragments.StartupFinishFragment
@@ -35,6 +35,8 @@ class StartupActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
 
+        val startupViewPager = findViewById<ViewPager>(R.id.startupViewPager)
+
         startupViewPager.adapter = ViewPagerAdapter(
             supportFragmentManager,
             FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
@@ -51,12 +53,16 @@ class StartupActivity : DaggerAppCompatActivity() {
     }
 
     fun backAction(view: View) {
+        val startupViewPager = findViewById<ViewPager>(R.id.startupViewPager)
+
         if (currentPageIndex > STARTUP_PAGE_LISTENER_PERMISSION_INDEX) {
             startupViewPager.currentItem = currentPageIndex - 1
         }
     }
 
     fun nextAction(view: View) {
+        val startupViewPager = findViewById<ViewPager>(R.id.startupViewPager)
+
         if (currentPageIndex == STARTUP_PAGE_FINISH_INDEX) {
             finishAppFirstRun()
         } else if (currentPageIndex < STARTUP_PAGE_FINISH_INDEX) {
@@ -65,6 +71,9 @@ class StartupActivity : DaggerAppCompatActivity() {
     }
 
     private fun updateNavigateButtonStates() {
+        val backButton = findViewById<Button>(R.id.backButton)
+        val nextButton = findViewById<Button>(R.id.nextButton)
+
         backButton.isEnabled = (currentPageIndex > STARTUP_PAGE_LISTENER_PERMISSION_INDEX)
         nextButton.text =
             if (currentPageIndex < STARTUP_PAGE_FINISH_INDEX) {
