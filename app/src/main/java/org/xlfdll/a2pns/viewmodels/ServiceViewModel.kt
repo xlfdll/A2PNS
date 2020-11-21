@@ -15,16 +15,21 @@ import org.xlfdll.a2pns.services.apple.APNSService
 import org.xlfdll.a2pns.services.apple.AuthTokenService
 import org.xlfdll.a2pns.services.db.NotificationCacheDao
 import javax.inject.Inject
+import kotlin.math.abs
 
 class ServiceViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var context: Context
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
     @Inject
     lateinit var authTokenService: AuthTokenService
+
     @Inject
     lateinit var apnsService: APNSService
+
     @Inject
     lateinit var notificationCacheDao: NotificationCacheDao
 
@@ -45,7 +50,11 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
         if (tokenIssuedTime != -1L) {
             val timeDifference = nowTime - tokenIssuedTime
 
-            hasIncorrectClock = (timeDifference < 0)
+            // Some devices may have incorrect (slow) clock in only seconds
+            // Follow best practices of time synchronization tolerance on Windows Kerberos authentication
+            // (Maximum tolerance = 5 minutes)
+            // https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/maximum-tolerance-for-computer-clock-synchronization
+            hasIncorrectClock = (timeDifference < 0) && ((abs(timeDifference) / 60) > 5)
 
             if (hasIncorrectClock) {
                 Log.i(
