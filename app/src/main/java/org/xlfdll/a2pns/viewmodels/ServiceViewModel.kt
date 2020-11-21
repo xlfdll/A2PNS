@@ -57,7 +57,7 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
             hasIncorrectClock = (timeDifference < 0) && ((abs(timeDifference) / 60) > 5)
 
             if (hasIncorrectClock) {
-                Log.i(
+                Log.e(
                     context.getString(R.string.app_name),
                     "[ERROR] Incorrect clock"
                 )
@@ -119,38 +119,51 @@ class ServiceViewModel @Inject constructor() : ViewModel() {
     suspend fun sendNotificationRequest(notificationItem: NotificationItem) {
         coroutineScope {
             if (!checkDuplicatedNotificationItem(notificationItem)) {
-                if (checkAuthTokenExpiration()) {
-                    updateAuthToken()
-                }
+                try {
+                    if (checkAuthTokenExpiration()) {
+                        updateAuthToken()
+                    }
 
-                if (!checkAuthTokenExpiration()) {
-                    Log.i(
+                    if (!checkAuthTokenExpiration()) {
+                        Log.i(
+                            context.getString(R.string.app_name),
+                            "[INFO] Started sending notification"
+                        )
+
+                        val deviceToken =
+                            sharedPreferences.getString(
+                                context.getString(R.string.pref_key_device_token),
+                                ""
+                            )
+                        val authToken =
+                            sharedPreferences.getString(
+                                context.getString(R.string.pref_key_auth_token),
+                                ""
+                            )
+                        val id =
+                            sharedPreferences.getString(
+                                context.getString(R.string.pref_key_auth_token_id),
+                                ""
+                            )
+                        val request = APNSRequest(notificationItem)
+
+                        apnsService.sendNotificationRequest(
+                            deviceToken!!,
+                            authToken!!,
+                            id!!,
+                            request
+                        )
+
+                        Log.i(
+                            context.getString(R.string.app_name),
+                            "[INFO] Finished sending notification"
+                        )
+                    }
+                } catch (ex: Throwable) {
+                    Log.e(
                         context.getString(R.string.app_name),
-                        "[INFO] Started sending notification"
-                    )
-
-                    val deviceToken =
-                        sharedPreferences.getString(
-                            context.getString(R.string.pref_key_device_token),
-                            ""
-                        )
-                    val authToken =
-                        sharedPreferences.getString(
-                            context.getString(R.string.pref_key_auth_token),
-                            ""
-                        )
-                    val id =
-                        sharedPreferences.getString(
-                            context.getString(R.string.pref_key_auth_token_id),
-                            ""
-                        )
-                    val request = APNSRequest(notificationItem)
-
-                    apnsService.sendNotificationRequest(deviceToken!!, authToken!!, id!!, request)
-
-                    Log.i(
-                        context.getString(R.string.app_name),
-                        "[INFO] Finished sending notification"
+                        "[ERROR] Exception happened when sending notification",
+                        ex
                     )
                 }
             }
