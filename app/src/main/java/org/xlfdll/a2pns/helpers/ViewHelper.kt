@@ -73,7 +73,8 @@ internal object ViewHelper {
         App.createNotificationChannel(context)
 
         val notificationIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
+        val pendingIntent =
+            PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = NotificationCompat.Builder(context, App.NOTIFICATION_CHANNEL_ID)
             .setOngoing(true)

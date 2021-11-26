@@ -19,7 +19,7 @@ class AppListController : TypedEpoxyController<List<PackageItem>>() {
                 icon(packageItem.icon)
                 selected(packageItem.isSelected)
                 itemCheckedChangeListener { model, parentView, clickedView, isChecked, position ->
-                    callback?.onPackageItemChecked(packageItem, clickedView, isChecked)
+                    this@AppListController.callback?.onPackageItemChecked(packageItem, clickedView, isChecked)
                 }
             }
         }
