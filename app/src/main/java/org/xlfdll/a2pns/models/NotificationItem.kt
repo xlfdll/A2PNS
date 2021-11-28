@@ -67,15 +67,20 @@ data class NotificationItem(
                 ?: context.getString(R.string.notification_unknown_title)
             val text: String = sbn?.notification?.extras?.getSpannableString("android.text")
                 ?: context.getString(R.string.notification_unknown_text)
-            val source: String =
-                if (sbn != null) context.packageManager.getPackageInfo(
-                    sbn.packageName,
-                    0
-                ).applicationInfo.loadLabel(
-                    context.packageManager
-                ).toString()
-                else ""
             val packageName: String = sbn?.packageName ?: ""
+
+            val source: String = if (sbn != null)
+                try {
+                    context.packageManager.getPackageInfo(
+                        sbn.packageName,
+                        0
+                    ).applicationInfo.loadLabel(
+                        context.packageManager
+                    ).toString()
+                } catch (e: Exception) {
+                    sbn.packageName
+                }
+            else ""
 
             return NotificationItem(null, title, text, source, packageName)
         }
