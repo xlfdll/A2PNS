@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_key_is_first_run_done">IsFirstRunDone</string>
-    <string name="pref_key_auth_token">AuthToken</string>
-    <string name="pref_key_auth_token_id">AuthTokenID</string>
-    <string name="pref_key_auth_token_issued_time">AuthTokenIssuedTime</string>
-    <string name="pref_key_device_token">DeviceToken</string>
-    <string name="pref_key_selected_apps">SelectedApps</string>
-    <string name="pref_key_cached_notification_count">CachedNotificationCount</string>
-    <string name="pref_key_custom_auth_token_url">CustomAuthTokenURL</string>
+    <string name="pref_key_is_first_run_done" translatable="false">IsFirstRunDone</string>
+    <string name="pref_key_auth_token" translatable="false">AuthToken</string>
+    <string name="pref_key_auth_token_id" translatable="false">AuthTokenID</string>
+    <string name="pref_key_auth_token_issued_time" translatable="false">AuthTokenIssuedTime</string>
+    <string name="pref_key_device_token" translatable="false">DeviceToken</string>
+    <string name="pref_key_selected_apps" translatable="false">SelectedApps</string>
+    <string name="pref_key_cached_notification_count" translatable="false">CachedNotificationCount</string>
+    <string name="pref_key_custom_auth_token_url" translatable="false">CustomAuthTokenURL</string>
 
-    <string name="pref_ns_key_sync_auth_token">SyncAuthToken</string>
-    <string name="pref_ns_key_pair_device">PairDevice</string>
-    <string name="pref_ns_key_select_apps">SelectApps</string>
+    <string name="pref_ns_key_sync_auth_token" translatable="false">SyncAuthToken</string>
+    <string name="pref_ns_key_pair_device" translatable="false">PairDevice</string>
+    <string name="pref_ns_key_select_apps" translatable="false">SelectApps</string>
 
-    <string name="id_qr_code_ios">A2IPNS</string>
+    <string name="id_qr_code_ios" translatable="false">A2IPNS</string>
 </resources>

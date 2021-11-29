@@ -23,7 +23,7 @@
     <string name="fragment_startup_notification_listener_permission_title">通知監視権限を許可</string>
     <string name="fragment_startup_notification_listener_permission_text"><i>ルールを守らければならない</i>…\n\nA2PNSアプリを使用するために、通知監視権限が必要であります。以下のボタンをタップし、次の画面で権限を許可し、アプリに戻ってください。\n\n<b>なぜ？</b> このアプリは通知監視権限を受け、他のアプリ・サービスの通知を捕獲・指定ユーザーのデバイスに転送することができます。</string>
     <string name="fragment_startup_device_token_title">デバイスをペアリング</string>
-    <string name="fragment_startup_device_token_text">A2PNSを使用し、通知を転送する前に、デバイスをペアリングしなければなりません（そうしないと、どこに転送するかとわからない、でしょう？）\n\n以下のボタンをタップし、画面の指示に従ってください！</string>
+    <string name="fragment_startup_device_token_text">A2PNSを使用し、通知を転送する前に、デバイスをペアリングしなければなりません（そうしないと、どこに転送するかとわからない、でしょう？）\n\n以下のボタンをタップし、画面の指示に従ってください！\n\n関連アプリ：</string>
     <string name="fragment_startup_app_list_title">監視されるアプリを選択</string>
     <string name="fragment_startup_app_list_text">もちろん、全部の通知を収集することが要りません。多～すぎる！\n\n逆に、以下のボタンをタップし、通知が監視したいアプリを選択しましょう！</string>
     <string name="fragment_startup_finish_title">完成！</string>

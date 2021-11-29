@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/fragment_startup_finish.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/fragment_startup_listener_permission.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/fragment_startup_pair_devices.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/fragment_startup_select_apps.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/view_notification_item.xml" value="0.1" />
       </map>
     </option>

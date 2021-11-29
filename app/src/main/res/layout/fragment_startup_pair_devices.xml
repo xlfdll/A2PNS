@@ -28,6 +28,17 @@
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
+    <TextView
+            android:id="@+id/companionAppTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/fragment_startup_device_token_companion_apps_text"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/contentTextView" />
+
     <Button
             android:id="@+id/pairDevicesButton"
             style="?android:attr/buttonBarButtonStyle"
@@ -39,6 +50,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contentTextView" />
+            app:layout_constraintTop_toBottomOf="@id/companionAppTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
