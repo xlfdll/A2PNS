@@ -23,7 +23,8 @@
     <string name="fragment_startup_notification_listener_permission_title">启用通知监听权限</string>
     <string name="fragment_startup_notification_listener_permission_text"><i>我们要遵守规则</i>…要使用A2PNS应用，通知监听权限是必需的。请点击下面的按钮启用通知监听权限，然后回到本应用并继续\n\n<b>为什么？</b> 本应用需要通知监听权限来获取其它应用或服务生成的通知，以用来转送至指定的用户设备中。</string>
     <string name="fragment_startup_device_token_title">配对设备</string>
-    <string name="fragment_startup_device_token_text">在使用A2PNS进行通知转送之前，我们需要配对手上的设备（不然我们不知道往哪儿送对吧？）。\n\n只需点击下面的按钮并遵循指示即可！\n\n配套应用：</string>
+    <string name="fragment_startup_device_token_text">在使用A2PNS进行通知转送之前，我们需要配对手上的设备（不然我们不知道往哪儿送对吧？）。\n\n只需下载并安装一个配套应用，然后点击下面的按钮并遵循指示即可！</string>
+    <string name="fragment_startup_device_token_companion_apps_text"><![CDATA[<a href=\"https://github.com/xlfdll/A2PNS/blob/master/COMPANION_APPS.md\">在这里下载配套应用！</a>]]></string>
     <string name="fragment_startup_app_list_title">选择要监听的应用</string>
     <string name="fragment_startup_app_list_text">我们当然不想收集所有的应用通知，那样就太！多！了！\n\n相反，点击下面的按钮选择要监听的应用吧！</string>
     <string name="fragment_startup_finish_title">完成！</string>

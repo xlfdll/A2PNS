@@ -1,19 +1,24 @@
-# Android to Push Notification Service - Base App
-This is the repository of Android to Push Notification Service (Base App).
+# Android to Push Notification Service (A2PNS) - Base App
+This is the repository of Android to Push Notification Service (Base App), a.k.a A2PNS.
 
 <a href="https://play.google.com/store/apps/details?id=org.xlfdll.a2pns">
   <img src="https://github.com/xlfdll/xlfdll.github.io/raw/master/images/google-play-badge.png" alt="Get A2PNS (Android) on Google Play Store" height="64">
 </a>
 
-[Join iOS TestFlight!](https://testflight.apple.com/join/cbUVu5XI)
-
-## Development
+## Usage
 Currently, the first version of A2PNS supports Android to iOS notification deliveries, and it is still under development.
 
 (This might be changed in the future. See Roadmap section below)
 
+To use A2PNS app:
+
+- Get and install A2PNS app via Google Play Store (see link above), or by downloading APK file directly from [Releases](https://github.com/xlfdll/A2PNS/releases)
+- [Get one of the companion apps](https://github.com/xlfdll/A2PNS/blob/master/COMPANION_APPS.md)
+- Run A2PNS app and follow the instructions
+
+## Development
 ### Build
-To build Android app:
+To build A2PNS app:
 
 1. Open the project in Android Studio
 2. In package org.xlfdll.a2pns, create a Kotlin code file named ''ExternalData.kt'' and add the following:
@@ -35,7 +40,7 @@ internal object ExternalData {
 
 3. Build the project and test
 
-Please refer to [here](https://github.com/bi119aTe5hXk/A2IPNS/blob/master/README.md) for complete build instructions on other components.
+Please refer to [here](https://github.com/bi119aTe5hXk/A2IPNS/blob/master/README.md) for complete build instructions on iOS companion app.
 
 ## Roadmap
 Below is a rough roadmap for A2PNS project.
