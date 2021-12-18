@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.android.support.DaggerAppCompatActivity
 import org.xlfdll.a2pns.NotificationListener
 import org.xlfdll.a2pns.R
@@ -35,13 +35,10 @@ class StartupActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
 
-        val startupViewPager = findViewById<ViewPager>(R.id.startupViewPager)
+        val startupViewPager = findViewById<ViewPager2>(R.id.startupViewPager)
 
-        startupViewPager.adapter = ViewPagerAdapter(
-            supportFragmentManager,
-            FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-        )
-        startupViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        startupViewPager.adapter = ViewPagerAdapter(this)
+        startupViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
@@ -53,7 +50,7 @@ class StartupActivity : DaggerAppCompatActivity() {
     }
 
     fun backAction(view: View) {
-        val startupViewPager = findViewById<ViewPager>(R.id.startupViewPager)
+        val startupViewPager = findViewById<ViewPager2>(R.id.startupViewPager)
 
         if (currentPageIndex > STARTUP_PAGE_LISTENER_PERMISSION_INDEX) {
             startupViewPager.currentItem = currentPageIndex - 1
@@ -61,7 +58,7 @@ class StartupActivity : DaggerAppCompatActivity() {
     }
 
     fun nextAction(view: View) {
-        val startupViewPager = findViewById<ViewPager>(R.id.startupViewPager)
+        val startupViewPager = findViewById<ViewPager2>(R.id.startupViewPager)
 
         if (currentPageIndex == STARTUP_PAGE_FINISH_INDEX) {
             finishAppFirstRun()
@@ -124,13 +121,13 @@ class StartupActivity : DaggerAppCompatActivity() {
             .show()
     }
 
-    inner class ViewPagerAdapter(fragmentManager: FragmentManager, behavior: Int) :
-        FragmentPagerAdapter(fragmentManager, behavior) {
-        override fun getCount(): Int {
+    inner class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
+        FragmentStateAdapter(fragmentActivity) {
+        override fun getItemCount(): Int {
             return 4
         }
 
-        override fun getItem(position: Int): Fragment {
+        override fun createFragment(position: Int): Fragment {
             when (position) {
                 STARTUP_PAGE_LISTENER_PERMISSION_INDEX -> return StartupListenerPermissionFragment()
                 STARTUP_PAGE_PAIR_DEVICES_INDEX -> return StartupPairDevicesFragment()

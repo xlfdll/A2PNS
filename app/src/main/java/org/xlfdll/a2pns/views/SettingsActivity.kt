@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
@@ -33,7 +33,7 @@ class SettingsActivity : DaggerAppCompatActivity() {
         this.title = getString(R.string.action_settings)
 
         serviceViewModel =
-            ViewModelProviders.of(this, viewModelFactory)[ServiceViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[ServiceViewModel::class.java]
 
         supportFragmentManager
             .beginTransaction()

@@ -132,15 +132,14 @@ class QRCodeActivity : DaggerAppCompatActivity() {
     }
 
     private fun extractDeviceToken(jsonObject: JSONObject): String? {
-        try {
+        return try {
             when (jsonObject.getString("id") == getString(R.string.id_qr_code_ios)) {
-                true -> return jsonObject.getString("token")
+                true -> jsonObject.getString("token")
+                else -> null
             }
         } catch (_: JSONException) {
-            return null
+            null
         }
-
-        return null
     }
 
     private fun saveDeviceToken(token: String?) {
