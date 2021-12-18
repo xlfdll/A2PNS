@@ -3,6 +3,9 @@
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android通知転送サービス</string>
 
+    <!-- Permissions -->
+    <string name="permission_notification_description">他のアプリ・サービスの通知を捕獲・指定ユーザーのデバイスに転送用にリクエスト</string>
+
     <!-- Common Alert Buttons -->
     <string name="alert_button_ok">OK</string>
     <string name="alert_button_yes">はい</string>

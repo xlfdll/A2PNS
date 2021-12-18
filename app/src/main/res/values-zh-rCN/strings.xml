@@ -3,6 +3,9 @@
     <string name="app_name">A2PNS</string>
     <string name="app_title">Android多机推送通知服务</string>
 
+    <!-- Permissions -->
+    <string name="permission_notification_description">用于获取其它应用或服务生成的通知，并转送至指定的用户设备</string>
+
     <!-- Common Alert Buttons -->
     <string name="alert_button_ok">OK</string>
     <string name="alert_button_yes">是</string>
